@@ -1,0 +1,7 @@
+assets/
+build/
+docs/
+CMakeFiles/
+compile_commands.json
+Doxyfile.bak
+Doxyfile
