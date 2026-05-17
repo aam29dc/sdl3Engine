@@ -1,5 +1,6 @@
 #pragma once
 #include "core/input.hpp"
+#include "managers/font.hpp"
 #include "managers/texture.hpp"
 #include "ui/cmds.hpp"
 #include "ui/ui.hpp"
@@ -14,6 +15,7 @@ private:
   std::unique_ptr<Window> window_;
   std::unique_ptr<Renderer> renderer_;
   Input input_;
+  FontManager fonts_;
 
   UI ui_;
   std::queue<UICmd> events_;

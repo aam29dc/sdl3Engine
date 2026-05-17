@@ -11,6 +11,7 @@ UI::UI() { // we'd allocated all our menus seperately here, then only push
   menuScreen_ = std::make_unique<MainScreen>();
 
   stack_.push_back(MenuID::MainMenu);
+  menuScreen_->onEnter();
 }
 
 UI::~UI() {
@@ -53,9 +54,10 @@ std::queue<UICmd> UI::handleEvents(const Input &input) {
   }
 }
 
-void UI::update(const float dt) {
+void UI::update(const HUDData &hud, const float dt) {
   if (playState_) {
     playScreen_->update(dt);
+    playScreen_->setHUDData(hud);
   }
   switch (stack_.back()) {
   case MenuID::Menu:

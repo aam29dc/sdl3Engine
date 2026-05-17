@@ -37,6 +37,15 @@ find_package(SDL3_image REQUIRED)
 target_link_libraries(app PRIVATE SDL3_image::SDL3_image)
 
 # -------------------------
+# SDL3_ttf
+# -------------------------
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(SDL3_TTF REQUIRED sdl3-ttf)
+
+target_include_directories(app PRIVATE ${SDL3_TTF_INCLUDE_DIRS})
+target_link_libraries(app PRIVATE ${SDL3_TTF_LIBRARIES})
+# -------------------------
 # Doxygen
 # -------------------------
 find_package(Doxygen REQUIRED)

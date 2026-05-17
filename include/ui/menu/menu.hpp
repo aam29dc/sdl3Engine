@@ -21,8 +21,8 @@ public:
   std::queue<UICmd> handleEvents(const Input &input) {
     return container_.handleEvents(input);
   }
-  void update(const float dt) { container_.update(dt); }
-  void render(Renderer &renderer) const { container_.render(renderer); }
-  void onEnter() { std::cout << menuIDtoString(id_) << " Enter.\n"; }
-  void onExit() { std::cout << menuIDtoString(id_) << " Exit.\n"; }
+  virtual void update(const float dt) { container_.update(dt); }
+  virtual void render(Renderer &renderer) const { container_.render(renderer); }
+  virtual void onEnter() { std::cout << menuIDtoString(id_) << " Enter.\n"; }
+  virtual void onExit() { std::cout << menuIDtoString(id_) << " Exit.\n"; }
 };

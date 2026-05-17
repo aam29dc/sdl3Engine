@@ -36,9 +36,9 @@ void Renderer::drawRect(const SDL_FRect &rect) {
   SDL_RenderRect(renderer_, &rect);
 }
 
-bool Renderer::draw(SDL_Texture *texture, const SDL_FRect *src,
+bool Renderer::draw(SDL_Texture &texture, const SDL_FRect *src,
                     const SDL_FRect *dst) {
-  return SDL_RenderTexture(renderer_, texture, src, dst);
+  return SDL_RenderTexture(renderer_, &texture, src, dst);
 }
 
 SDL_Renderer *Renderer::get() { return renderer_; }

@@ -9,5 +9,5 @@ void PlayState::onEnter(Engine &) { std::cout << "Enter playstate.\n"; }
 void PlayState::onExit(Engine &) { std::cout << "Exit playstate.\n"; }
 
 void PlayState::handleEvents(Engine &) {}
-void PlayState::update(Engine &, const float) {}
+HUDData PlayState::update(Engine &, const float) { return {123}; }
 void PlayState::render(const Engine &) const {}

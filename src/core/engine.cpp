@@ -6,6 +6,7 @@
 #include "ui/menu/id.hpp"
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_log.h>
+#include <iostream>
 #include <memory>
 
 bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
@@ -22,6 +23,14 @@ bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
   }
 
   if (!renderer_->init(window_.get())) {
+    window_.reset();
+    SDL_Quit();
+    return false;
+  }
+
+  if (!fonts_.init("assets/fonts/DejaVuSans.ttf")) {
+    std::cout << "Fonts failed to init.\n";
+    renderer_.reset();
     window_.reset();
     SDL_Quit();
     return false;
@@ -61,7 +70,7 @@ void Engine::update(const float dt) {
       if (play_) {
         play_->onExit(*this);
         play_.reset();
-        ui_.playState(play_ == nullptr);
+        ui_.playState(false);
         ui_.push(MenuID::MainMenu);
       }
       break;
@@ -75,9 +84,13 @@ void Engine::update(const float dt) {
     }
     events_.pop();
   }
+
+  HUDData hud{};
+
   if (play_)
-    play_->update(*this, dt);
-  ui_.update(dt);
+    hud = play_->update(*this, dt);
+  else
+    ui_.update(hud, dt);
 }
 
 void Engine::render() const {

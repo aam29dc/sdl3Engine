@@ -22,7 +22,7 @@ public:
   void clear();
   void present();
   void setDrawColor(const SDL_Color &color);
-  bool draw(SDL_Texture *texture, const SDL_FRect *src = nullptr,
+  bool draw(SDL_Texture &texture, const SDL_FRect *src = nullptr,
             const SDL_FRect *dst = nullptr);
 
   void drawFillRect(const SDL_FRect &rect);
