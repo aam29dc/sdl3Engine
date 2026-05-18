@@ -42,7 +42,7 @@ FontManager::~FontManager() {
 }
 
 SDL_Texture *FontManager::getText(Renderer *renderer, const std::string &text,
-                                  const FontSize size) {
+                                  const FontSize size) const {
   if (text.empty()) {
     return nullptr;
   }

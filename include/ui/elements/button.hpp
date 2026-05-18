@@ -1,5 +1,6 @@
 #pragma once
 #include "core/input.hpp"
+#include "core/render_context.hpp"
 #include "ui/cmds.hpp"
 #include "ui/elements/element.hpp"
 
@@ -19,7 +20,7 @@ public:
 
   virtual void handleEvents(const Input &input) override;
   virtual void update(const float dt) override;
-  virtual void render(Renderer &renderer) const override;
+  virtual void render(const RenderContext &ctx) const override;
 
   bool clicked() const { return clicked_; }
   bool pressed() const { return pressed_; }

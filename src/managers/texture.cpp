@@ -19,6 +19,14 @@ TextureHandle TextureManager::load(Renderer &renderer,
   return {id};
 }
 
+TextureHandle TextureManager::load(SDL_Texture *texture) {
+  if (!texture)
+    return {0};
+  u32 id = nextID_++;
+  textures_[id] = texture;
+  return {id};
+}
+
 bool TextureManager::remove(u32 id) {
   auto it = textures_.find(id);
   if (it == textures_.end())

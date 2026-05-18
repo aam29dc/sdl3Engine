@@ -1,4 +1,5 @@
 #pragma once
+#include "core/render_context.hpp"
 #include <memory>
 #include <queue>
 #include <vector>
@@ -26,13 +27,13 @@ private:
   bool playState_{false};
 
 public:
-  UI(); // start off with menuScreen allocated
+  UI(RenderContext &ctx); // start off with menuScreen allocated
   ~UI();
   void push(const MenuID screen);
   void pop();
 
   std::queue<UICmd> handleEvents(const Input &input);
   void update(const HUDData &hud, const float dt);
-  void render(Renderer &renderer) const;
+  void render(const RenderContext &ctx) const;
   void playState(const bool active) { playState_ = active; }
 };

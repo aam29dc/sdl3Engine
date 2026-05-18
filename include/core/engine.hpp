@@ -17,7 +17,7 @@ private:
   Input input_;
   FontManager fonts_;
 
-  UI ui_;
+  std::unique_ptr<UI> ui_;
   std::queue<UICmd> events_;
 
   std::unique_ptr<GameState> play_;
@@ -27,12 +27,17 @@ private:
 public:
   Engine();
   ~Engine();
+
   Window &window() { return *window_; };
-  Renderer &renderer() const { return *renderer_; }
+  Renderer &renderer() { return *renderer_; }
+  const Renderer &renderer() const { return *renderer_; }
   //  StateMachine &stateMachine() { return stateMachine_; }
   Input &input() { return input_; }
+  const Input &input() const { return input_; }
   TextureManager &textures() { return textures_; }
   const TextureManager &textures() const { return textures_; }
+  FontManager &fonts() { return fonts_; }
+  const FontManager &fonts() const { return fonts_; }
 
   Engine(const Engine &) = delete;
   Engine &operator=(const Engine &) = delete;

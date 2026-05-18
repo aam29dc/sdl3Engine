@@ -1,4 +1,5 @@
 #include "ui/elements/container.hpp"
+#include "core/render_context.hpp"
 #include "ui/elements/button.hpp"
 
 UIContainer::UIContainer() = default;
@@ -24,10 +25,10 @@ std::queue<UICmd> UIContainer::handleEvents(const Input &input) {
   return cmds;
 }
 
-void UIContainer::render(Renderer &renderer) const {
+void UIContainer::render(const RenderContext &ctx) const {
   for (auto &el : eles_) {
     if (el->visible()) {
-      el->render(renderer);
+      el->render(ctx);
     }
   }
 }

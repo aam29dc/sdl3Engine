@@ -1,14 +1,15 @@
 #include "ui/ui.hpp"
-#include "core/renderer.hpp"
+#include "core/render_context.hpp"
 #include "ui/menu/mainScreen.hpp"
 #include "ui/menu/playScreen.hpp"
 
-UI::UI() { // we'd allocated all our menus seperately here, then only push
-           // menuScreen to stack
+UI::UI(RenderContext &ctx) { // we'd allocated all our menus seperately here,
+                             // then only push
+                             // menuScreen to stack
 
-  playScreen_ = std::make_unique<PlayScreen>();
+  playScreen_ = std::make_unique<PlayScreen>(ctx);
   stack_.push_back(MenuID::PlayMenu);
-  menuScreen_ = std::make_unique<MainScreen>();
+  menuScreen_ = std::make_unique<MainScreen>(ctx);
 
   stack_.push_back(MenuID::MainMenu);
   menuScreen_->onEnter();
@@ -82,16 +83,16 @@ void UI::update(const HUDData &hud, const float dt) {
   }
 }
 
-void UI::render(Renderer &renderer) const {
+void UI::render(const RenderContext &ctx) const {
   if (playState_) {
-    playScreen_->render(renderer);
+    playScreen_->render(ctx);
   }
   switch (stack_.back()) {
   case MenuID::Menu:
   default:
     break;
   case MenuID::MainMenu:
-    menuScreen_->render(renderer);
+    menuScreen_->render(ctx);
     break;
   case MenuID::PlayMenu:
     break; // we always render playState hud above

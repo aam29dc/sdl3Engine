@@ -22,6 +22,8 @@ public:
   TextureManager &operator=(TextureManager &&) = delete;
 
   TextureHandle load(Renderer &renderer, const std::string &imgFile);
+  TextureHandle load(SDL_Texture *texture);
+
   bool remove(u32 id);
   void clear();
   SDL_Texture *get(u32 id) const;

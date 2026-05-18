@@ -10,4 +10,4 @@ void PlayState::onExit(Engine &) { std::cout << "Exit playstate.\n"; }
 
 void PlayState::handleEvents(Engine &) {}
 HUDData PlayState::update(Engine &, const float) { return {123}; }
-void PlayState::render(const Engine &) const {}
+void PlayState::render(const RenderContext &) const {}

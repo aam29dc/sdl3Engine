@@ -1,4 +1,5 @@
 #include "core/engine.hpp"
+#include "core/render_context.hpp"
 #include "core/renderer.hpp"
 #include "core/window.hpp"
 #include "states/playState.hpp"
@@ -36,6 +37,10 @@ bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
     return false;
   }
 
+  RenderContext ctx = {*renderer_, textures_, fonts_};
+
+  ui_ = std::make_unique<UI>(ctx);
+
   // play_ = std::make_unique<PlayState>();
   // play_->onEnter(*this);
 
@@ -47,7 +52,7 @@ void Engine::pushEvent(const UICmd cmd) { events_.push(cmd); }
 void Engine::handleEvents(const SDL_Event &e) {
   window_->handleEvent(e);
   input_.handleEvent(e);
-  events_ = ui_.handleEvents(input_);
+  events_ = ui_->handleEvents(input_);
   if (play_)
     play_->handleEvents(*this);
 }
@@ -62,16 +67,16 @@ void Engine::update(const float dt) {
       if (!play_) {
         play_ = std::make_unique<PlayState>();
         play_->onEnter(*this);
-        ui_.playState(play_ != nullptr);
-        ui_.pop();
+        ui_->playState(play_ != nullptr);
+        ui_->pop();
       }
       break;
     case UICmd::Disconnect:
       if (play_) {
         play_->onExit(*this);
         play_.reset();
-        ui_.playState(false);
-        ui_.push(MenuID::MainMenu);
+        ui_->playState(false);
+        ui_->push(MenuID::MainMenu);
       }
       break;
     case UICmd::Reload:
@@ -90,16 +95,20 @@ void Engine::update(const float dt) {
   if (play_)
     hud = play_->update(*this, dt);
   else
-    ui_.update(hud, dt);
+    ui_->update(hud, dt);
 }
 
 void Engine::render() const {
   renderer_->setDrawColor(Color::White);
   renderer_->clear();
 
+  RenderContext ctx = {const_cast<Renderer &>(*renderer_),
+                       const_cast<TextureManager &>(textures_),
+                       const_cast<FontManager &>(fonts_)};
+
   if (play_)
-    play_->render(*this);
-  ui_.render(*renderer_);
+    play_->render(ctx);
+  ui_->render(ctx);
 
   renderer_->present();
 }

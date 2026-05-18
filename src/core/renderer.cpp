@@ -1,5 +1,6 @@
 #include "core/renderer.hpp"
 #include "core/window.hpp"
+// #include "managers/texture.hpp"
 #include <SDL3/SDL_log.h>
 #include <SDL3/SDL_render.h>
 
@@ -22,23 +23,30 @@ bool Renderer::init(Window *window) {
   return true;
 }
 
-void Renderer::clear() { SDL_RenderClear(renderer_); }
-void Renderer::present() { SDL_RenderPresent(renderer_); }
+void Renderer::clear() const { SDL_RenderClear(renderer_); }
+void Renderer::present() const { SDL_RenderPresent(renderer_); }
 
-void Renderer::setDrawColor(const SDL_Color &color) {
+void Renderer::setDrawColor(const SDL_Color &color) const {
   SDL_SetRenderDrawColor(renderer_, color.r, color.g, color.b, color.a);
 }
-void Renderer::drawFillRect(const SDL_FRect &rect) {
+void Renderer::drawFillRect(const SDL_FRect &rect) const {
   SDL_RenderFillRect(renderer_, &rect);
 }
 
-void Renderer::drawRect(const SDL_FRect &rect) {
+void Renderer::drawRect(const SDL_FRect &rect) const {
   SDL_RenderRect(renderer_, &rect);
 }
 
-bool Renderer::draw(SDL_Texture &texture, const SDL_FRect *src,
-                    const SDL_FRect *dst) {
-  return SDL_RenderTexture(renderer_, &texture, src, dst);
+void Renderer::draw(SDL_Texture *texture, const SDL_FRect *src,
+                    const SDL_FRect *dst) const {
+  SDL_RenderTexture(renderer_, texture, src, dst);
 }
+
+/* void Renderer::draw(const TextureManager &textures,
+                       const TextureHandle handle, const SDL_FRect *src,
+                       const SDL_FRect *dst) {
+  SDL_RenderTexture(renderer_, textures.get(handle.id), src, dst);
+}
+*/
 
 SDL_Renderer *Renderer::get() { return renderer_; }

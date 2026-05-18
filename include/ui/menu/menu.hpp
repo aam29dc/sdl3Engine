@@ -3,7 +3,7 @@
 #include "ui/menu/id.hpp"
 #include <iostream>
 #include <queue>
-
+struct RenderContext;
 class Renderer;
 enum class UICmd;
 
@@ -15,14 +15,16 @@ protected:
   MenuID id_ = MenuID::Menu;
 
 public:
-  Menu(const MenuID id = MenuID::Menu) : id_(id) {}
+  Menu(RenderContext &, const MenuID id = MenuID::Menu) : id_(id) {}
   virtual ~Menu() = default;
 
   std::queue<UICmd> handleEvents(const Input &input) {
     return container_.handleEvents(input);
   }
   virtual void update(const float dt) { container_.update(dt); }
-  virtual void render(Renderer &renderer) const { container_.render(renderer); }
+  virtual void render(const RenderContext &ctx) const {
+    container_.render(ctx);
+  }
   virtual void onEnter() { std::cout << menuIDtoString(id_) << " Enter.\n"; }
   virtual void onExit() { std::cout << menuIDtoString(id_) << " Exit.\n"; }
 };

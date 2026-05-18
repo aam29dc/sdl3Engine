@@ -2,7 +2,9 @@
 #include "ui/colors.hpp"
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
+
 class Renderer;
+
 class FontManager {
 public:
   enum class FontSize { Small, Medium, Large };
@@ -29,5 +31,5 @@ public:
   FontManager &operator=(FontManager &&) = delete;
 
   SDL_Texture *getText(Renderer *renderer, const std::string &text,
-                       const FontSize size);
+                       const FontSize size) const;
 };
