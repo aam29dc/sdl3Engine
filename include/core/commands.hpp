@@ -1,6 +1,6 @@
 #pragma once
-#include "core/command_context.hpp"
 #include "core/console.hpp"
+#include "core/context/command.hpp"
 
 void cmd_clear(CommandContext &frameCtx, const Console::Args &);
 

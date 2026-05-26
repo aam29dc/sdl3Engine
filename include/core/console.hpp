@@ -1,5 +1,5 @@
 #pragma once
-#include "core/command_context.hpp"
+#include "core/context/command.hpp"
 #include <functional>
 #include <string>
 #include <unordered_map>

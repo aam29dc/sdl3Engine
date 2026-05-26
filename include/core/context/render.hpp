@@ -4,6 +4,7 @@ class Renderer;
 class TextureManager;
 class FontManager;
 struct UISpace;
+class Camera;
 
 struct RenderContext {
   Renderer &renderer;

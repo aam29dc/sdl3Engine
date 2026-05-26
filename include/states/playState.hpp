@@ -1,11 +1,14 @@
 #pragma once
+#include "core/camera.hpp"
 #include "states/gameState.hpp"
 #include "ui/hud.hpp"
 
 class PlayState : public GameState {
 private:
-public:
   HUDData hud_{};
+  Camera camera_;
+
+public:
   PlayState();
   ~PlayState();
 
