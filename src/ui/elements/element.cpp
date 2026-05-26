@@ -1,35 +1,41 @@
 #include "ui/elements/element.hpp"
 #include "core/render_context.hpp"
+#include "ui/content/content.hpp"
+#include "ui/layout.hpp"
+#include "ui/style/solid.hpp"
 
-UIElement::UIElement(const SDL_FRect &rect) : rect_(rect) {};
+UIElement::UIElement(const UITransform &transform) : transform_(transform) {
+  style_ = std::make_unique<UISolidStyle>();
+};
 
-void UIElement::handleEvents(const Input &input) {
-  for (auto &el : children_) {
-    el->handleEvents(input);
-  }
+UIElement::~UIElement() = default;
+
+void UIElement::handleEvents(const Input &, const UISpace &, UIEventSink &) {
+  if (!visible_)
+    return;
 }
-void UIElement::update(const float dt) {
-  for (auto &el : children_) {
-    el->update(dt);
-  }
+
+void UIElement::update(const float) {
+  if (!visible_)
+    return;
 }
+
 void UIElement::render(const RenderContext &ctx) const {
-  /*  renderer.setDrawColor(color_);
-    renderer.drawFillRect(rect_);
-    renderer.setDrawColor(outline_);
-    renderer.drawRect(rect_);
-   */
-  for (auto &el : children_) {
-    el->render(ctx);
+  if (!visible_)
+    return;
+
+  SDL_FRect rect = resolveRect(transform_, ctx.uiSpace);
+
+  if (style_) {
+    style_->render(rect, styleParams_, ctx);
+  }
+
+  for (const auto &c : contents_) {
+    c->render(rect, ctx);
   }
 }
 
-void UIElement::add(std::unique_ptr<UIElement> ele) {
-  children_.push_back(std::move(ele));
-}
-
+UITransform &UIElement::transform() { return transform_; }
 i32 UIElement::id() const { return id_; }
-const std::string &UIElement::name() const { return name_; }
-
 bool UIElement::visible() const { return visible_; }
-void UIElement::toggle() { visible_ = !visible_; }
+void UIElement::visible(bool value) { visible_ = value; }

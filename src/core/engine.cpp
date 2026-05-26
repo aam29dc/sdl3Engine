@@ -1,99 +1,144 @@
 #include "core/engine.hpp"
+#include "core/commands.hpp"
+#include "core/frame_context.hpp"
 #include "core/render_context.hpp"
 #include "core/renderer.hpp"
+#include "core/update_context.hpp"
 #include "core/window.hpp"
+#include "managers/font.hpp"
+#include "managers/texture.hpp"
 #include "states/playState.hpp"
 #include "ui/colors.hpp"
-#include "ui/menu/id.hpp"
+#include "ui/eventsink.hpp"
+#include "ui/layout.hpp"
+#include "ui/menu/menu.hpp"
+#include "ui/ui.hpp"
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_log.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <iostream>
 #include <memory>
 
 bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
-  if (!SDL_Init(SDL_INIT_VIDEO)) {
-    SDL_Log("Init failed: %s", SDL_GetError());
-    return false;
-  }
   window_ = std::make_unique<Window>();
   renderer_ = std::make_unique<Renderer>();
 
   if (!window_->init(windowWidth, windowHeight)) {
+    std::cout << "Window failed init." << std::endl;
     SDL_Quit();
     return false;
   }
 
   if (!renderer_->init(window_.get())) {
+    std::cout << "renderer failed init." << std::endl;
     window_.reset();
     SDL_Quit();
     return false;
   }
 
-  if (!fonts_.init("assets/fonts/DejaVuSans.ttf")) {
-    std::cout << "Fonts failed to init.\n";
+  if (!TTF_Init()) {
+    std::cout << "TTF_Init failed: " << SDL_GetError() << "\n";
+    renderer_.reset();
+    window_.reset();
+    TTF_Quit();
+    SDL_Quit();
+    return false;
+  }
+
+  fonts_ = std::make_unique<FontManager>();
+
+  if (!fonts_->init("assets/fonts/DejaVuSans.ttf")) {
+    std::cout << "Fonts failed to init." << std::endl;
     renderer_.reset();
     window_.reset();
     SDL_Quit();
     return false;
   }
 
-  RenderContext ctx = {*renderer_, textures_, fonts_};
+  textures_ = std::make_unique<TextureManager>();
 
-  ui_ = std::make_unique<UI>(ctx);
+  const UISpace space = {(float)window_->getWidth(),
+                         (float)window_->getHeight()};
 
-  // play_ = std::make_unique<PlayState>();
-  // play_->onEnter(*this);
+  RenderContext renderCtx = {*renderer_, *textures_, *fonts_, space};
+
+  ui_ = std::make_unique<UI>(renderCtx);
+
+  console_.addCommand("clear", cmd_clear);
+  console_.addCommand("echo", cmd_echo);
+
+  play_ = std::make_unique<PlayState>();
+  //  play_->onEnter(renderCtx);
 
   return true;
 }
 
-void Engine::pushEvent(const UICmd cmd) { events_.push(cmd); }
-
 void Engine::handleEvents(const SDL_Event &e) {
   window_->handleEvent(e);
   input_.handleEvent(e);
-  events_ = ui_->handleEvents(input_);
-  if (play_)
-    play_->handleEvents(*this);
 }
 
-void Engine::update(const float dt) {
-  while (!events_.empty()) {
-    switch (events_.front()) {
+void Engine::update(float dt) {
+  const UISpace space = {(float)window_->getWidth(),
+                         (float)window_->getHeight()};
+
+  FrameContext frameCtx = {*window_, input_};
+
+  sink_.clear();
+  ui_->handleEvents(input_, space, sink_);
+  if (play_)
+    play_->handleEvents(frameCtx);
+
+  UpdateContext updateCtx = {*renderer_, *textures_, *fonts_};
+
+  for (const auto &e : sink_.events()) {
+
+    switch (e.cmd) {
+
     case UICmd::None:
     default:
       break;
+
     case UICmd::Start:
       if (!play_) {
         play_ = std::make_unique<PlayState>();
-        play_->onEnter(*this);
-        ui_->playState(play_ != nullptr);
+
+        play_->onEnter(updateCtx);
+
+        //        ui_->playState(true);
         ui_->pop();
       }
       break;
+
     case UICmd::Disconnect:
       if (play_) {
-        play_->onExit(*this);
+        play_->onExit(updateCtx);
+
         play_.reset();
-        ui_->playState(false);
-        ui_->push(MenuID::MainMenu);
+
+        //       ui_->playState(false);
+        ui_->push(MenuID::Main);
       }
       break;
+
     case UICmd::Reload:
-      if (!play_) {
-        play_->onExit(*this);
+      if (play_) {
+        play_->onExit(updateCtx);
+
         play_.reset();
+
         play_ = std::make_unique<PlayState>();
+
+        play_->onEnter(updateCtx);
       }
       break;
     }
-    events_.pop();
   }
 
   HUDData hud{};
 
   if (play_)
-    hud = play_->update(*this, dt);
+    hud = play_->update(updateCtx, dt);
   else
     ui_->update(hud, dt);
 }
@@ -102,13 +147,16 @@ void Engine::render() const {
   renderer_->setDrawColor(Color::White);
   renderer_->clear();
 
-  RenderContext ctx = {const_cast<Renderer &>(*renderer_),
-                       const_cast<TextureManager &>(textures_),
-                       const_cast<FontManager &>(fonts_)};
+  const UISpace space = {(float)window_->getWidth(),
+                         (float)window_->getHeight()};
+
+  //  const float scale = getUniformScale(space);
+
+  RenderContext renderCtx = {*renderer_, *textures_, *fonts_, space};
 
   if (play_)
-    play_->render(ctx);
-  ui_->render(ctx);
+    play_->render(renderCtx);
+  ui_->render(renderCtx);
 
   renderer_->present();
 }
@@ -117,6 +165,15 @@ Engine::Engine() = default;
 
 Engine::~Engine() {
   if (play_) {
-    play_->onExit(*this);
+    UpdateContext updateCtx = {*renderer_, *textures_, *fonts_};
+    play_->onExit(updateCtx);
+    play_.reset();
   }
+  ui_.reset();
+  textures_.reset();
+  fonts_.reset();
+  renderer_.reset();
+  window_.reset();
+  TTF_Quit();
+  SDL_Quit();
 }

@@ -4,11 +4,11 @@ std::string menuIDtoString(const MenuID id) {
   switch (id) {
   case MenuID::Menu:
     return "Menu";
-  case MenuID::MainMenu:
+  case MenuID::Main:
     return "MainMenu";
-  case MenuID::PlayMenu:
+  case MenuID::Play:
     return "PlayMenu";
-  case MenuID::PauseMenu:
+  case MenuID::Pause:
     return "PauseMenu";
   case MenuID::Settings:
     return "Settings";
@@ -21,3 +21,19 @@ std::string menuIDtoString(const MenuID id) {
   }
   return "Unknown";
 }
+
+Menu::Menu(const RenderContext &, const MenuID id, const UITransform &transform)
+    : root_(transform), id_(id) {}
+
+void Menu::handleEvents(const Input &input, const UISpace &space,
+                        UIEventSink &sink) {
+  return root_.handleEvents(input, space, sink);
+}
+
+void Menu::update(const float dt) { root_.update(dt); }
+
+void Menu::render(const RenderContext &ctx) const { root_.render(ctx); }
+
+void Menu::onEnter() {}
+
+void Menu::onExit() {}

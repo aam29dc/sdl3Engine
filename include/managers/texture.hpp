@@ -1,30 +1,34 @@
 #pragma once
+
 #include "core/handles.hpp"
 #include "core/types.hpp"
-
-class SDL_Texture;
-class Renderer;
 #include <string>
-#include <unordered_map>
+#include <vector>
+
+class Renderer;
+class SDL_Texture;
+class SDL_Surface;
 
 class TextureManager {
 private:
-  std::unordered_map<u32, SDL_Texture *> textures_;
-  u32 nextID_ = 1;
+  struct Entry {
+    SDL_Texture *texture = nullptr;
+    u32 generation = 1;
+  };
+
+  std::vector<Entry> textures_;
+  std::vector<u32> freeSlots_;
 
 public:
-  TextureManager() = default;
-  ~TextureManager() = default;
+  ~TextureManager();
+  TextureHandle loadFromFile(Renderer &, const std::string &);
+  TextureHandle loadFromSurface(Renderer &, SDL_Surface *);
+  TextureHandle adopt(SDL_Texture *);
 
-  TextureManager(const TextureManager &) = delete;
-  TextureManager &operator=(const TextureManager &) = delete;
-  TextureManager(TextureManager &&) = delete;
-  TextureManager &operator=(TextureManager &&) = delete;
+  bool remove(TextureHandle handle);
+  bool valid(TextureHandle handle) const;
 
-  TextureHandle load(Renderer &renderer, const std::string &imgFile);
-  TextureHandle load(SDL_Texture *texture);
+  const SDL_Texture *get(const TextureHandle handle) const;
 
-  bool remove(u32 id);
   void clear();
-  SDL_Texture *get(u32 id) const;
 };

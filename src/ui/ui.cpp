@@ -1,33 +1,33 @@
 #include "ui/ui.hpp"
 #include "core/render_context.hpp"
-#include "ui/menu/mainScreen.hpp"
-#include "ui/menu/playScreen.hpp"
+#include "ui/menu/mainMenu.hpp"
+#include "ui/menu/playMenu.hpp"
+#include <algorithm>
 
 UI::UI(RenderContext &ctx) { // we'd allocated all our menus seperately here,
                              // then only push
-                             // menuScreen to stack
+                             // menuMenu to stack
 
-  playScreen_ = std::make_unique<PlayScreen>(ctx);
-  stack_.push_back(MenuID::PlayMenu);
-  menuScreen_ = std::make_unique<MainScreen>(ctx);
+  playMenu_ = std::make_unique<PlayMenu>(ctx);
+  stack_.push_back(MenuID::Play);
+  mainMenu_ = std::make_unique<MainMenu>(ctx);
 
-  stack_.push_back(MenuID::MainMenu);
-  menuScreen_->onEnter();
+  stack_.push_back(MenuID::Main);
+  mainMenu_->onEnter();
 }
 
 UI::~UI() {
-  if (playState_)
-    playScreen_->onExit();
-  menuScreen_->onExit();
+  playMenu_->onExit();
+  mainMenu_->onExit();
 }
 
-// push only unique screens on stack
-void UI::push(const MenuID screen) {
+// push only unique menus on stack
+void UI::push(const MenuID menu) {
   for (auto &s : stack_) {
-    if (s == screen)
+    if (s == menu)
       return;
   }
-  stack_.push_back(screen);
+  stack_.push_back(menu);
 }
 
 void UI::pop() {
@@ -36,41 +36,44 @@ void UI::pop() {
   }
 }
 
-// call corresponding screen function, we used a switch since we wont have many
-std::queue<UICmd> UI::handleEvents(const Input &input) {
+// call corresponding menu function, we used a switch since we wont have many
+void UI::handleEvents(const Input &input, const UISpace &space,
+                      UIEventSink &sink) {
   switch (stack_.back()) {
   case MenuID::Menu:
   default:
-    return {};
-  case MenuID::MainMenu:
-    return menuScreen_->handleEvents(input);
-  case MenuID::PlayMenu:
-    return playScreen_->handleEvents(input);
-  case MenuID::PauseMenu:
+    return;
+  case MenuID::Main:
+    return mainMenu_->handleEvents(input, space, sink);
+  case MenuID::Play:
+    return playMenu_->handleEvents(input, space, sink);
+  case MenuID::Pause:
   case MenuID::Audio:
   case MenuID::Controls:
   case MenuID::Settings:
   case MenuID::Video:
-    return {};
+    return;
   }
 }
 
 void UI::update(const HUDData &hud, const float dt) {
-  if (playState_) {
-    playScreen_->update(dt);
-    playScreen_->setHUDData(hud);
+  // update playMenu first
+  if (std::find(stack_.begin(), stack_.end(), MenuID::Play) != stack_.end()) {
+    playMenu_->update(dt);
+    playMenu_->setHUDData(hud);
   }
+
   switch (stack_.back()) {
   case MenuID::Menu:
   default:
     break;
-  case MenuID::MainMenu:
-    menuScreen_->update(dt);
+  case MenuID::Main:
+    mainMenu_->update(dt);
     break;
-  case MenuID::PlayMenu:
-    // always update PlayScreen
+  case MenuID::Play:
+    // always update PlayMenu, above, thus do nothing here
     break;
-  case MenuID::PauseMenu:
+  case MenuID::Pause:
     break;
   case MenuID::Audio:
     break;
@@ -84,19 +87,21 @@ void UI::update(const HUDData &hud, const float dt) {
 }
 
 void UI::render(const RenderContext &ctx) const {
-  if (playState_) {
-    playScreen_->render(ctx);
+  // render playMenu aka play HUD first
+  if (std::find(stack_.begin(), stack_.end(), MenuID::Play) != stack_.end()) {
+    playMenu_->render(ctx);
   }
+
   switch (stack_.back()) {
   case MenuID::Menu:
   default:
     break;
-  case MenuID::MainMenu:
-    menuScreen_->render(ctx);
+  case MenuID::Main:
+    mainMenu_->render(ctx);
     break;
-  case MenuID::PlayMenu:
+  case MenuID::Play:
     break; // we always render playState hud above
-  case MenuID::PauseMenu:
+  case MenuID::Pause:
     break;
   case MenuID::Audio:
     break;

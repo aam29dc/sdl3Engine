@@ -4,11 +4,11 @@
 
 struct RenderContext;
 
-class PlayScreen : public Menu {
+class PlayMenu : public Menu {
 private:
   HUDData hud_{};
 
 public:
-  PlayScreen(RenderContext &ctx);
+  PlayMenu(RenderContext &ctx);
   void setHUDData(const HUDData &hud) { hud_ = hud; }
 };

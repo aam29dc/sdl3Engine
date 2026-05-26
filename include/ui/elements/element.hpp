@@ -1,40 +1,50 @@
 #pragma once
-#include "core/input.hpp"
-#include "core/render_context.hpp"
-#include "core/types.hpp"
-#include "ui/colors.hpp"
 #include <memory>
-#include <string>
 #include <vector>
 
+#include "core/types.hpp"
+#include "ui/dirty.hpp"
+#include "ui/layout.hpp"
+#include "ui/style/style.hpp"
+class Input;
+class UIStyle;
+class UIContent;
+class UIEventSink;
+struct UISpace;
+class UIContainer;
 struct RenderContext;
 
 class UIElement {
 protected:
-  SDL_FRect rect_{0, 0, 0, 0};
-  SDL_Color color_{Color::Light};
-  SDL_Color outline_{Color::Gray};
-  bool visible_{true};
-  std::string name_{};
+  UITransform transform_{{0, 0, 0, 0}, Anchor::TopLeft};
+  UIStyleParams styleParams_{false, false, false};
 
-  inline static u32 count_ = 0;
+  std::unique_ptr<UIStyle> style_{};
+  std::vector<std::unique_ptr<UIContent>> contents_;
+  bool visible_ = true;
+  Dirty dirty_ = Dirty::None;
+
+  inline static u32 count_ = 1;
   u32 id_{count_++};
 
-  std::vector<std::unique_ptr<UIElement>> children_;
+  UIContainer *parent_ = nullptr;
 
 public:
-  UIElement(const SDL_FRect &rect);
-  virtual ~UIElement() = default;
+  UIElement(const UITransform &transform = {{0, 0, 0, 0}, Anchor::TopLeft});
+  virtual ~UIElement();
 
-  virtual void handleEvents(const Input &input);
+  virtual void handleEvents(const Input &input, const UISpace &space,
+                            UIEventSink &sink);
   virtual void update(const float);
   virtual void render(const RenderContext &ctx) const;
+  void markDirty();
 
-  void add(std::unique_ptr<UIElement> ele);
+  void style(std::unique_ptr<UIStyle> style);
+  void addContent(std::unique_ptr<UIContent> content);
 
+  UITransform &transform();
   i32 id() const;
-  const std::string &name() const;
 
   bool visible() const;
-  void toggle();
+  void visible(bool value);
 };

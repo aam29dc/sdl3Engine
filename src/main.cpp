@@ -3,7 +3,6 @@
 int main() {
   i32 windowWidth = 1440;
   i32 windowHeight = 900;
-
   Game game;
 
   if (!game.init(windowWidth, windowHeight)) {

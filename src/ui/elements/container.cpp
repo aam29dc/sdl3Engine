@@ -1,39 +1,43 @@
 #include "ui/elements/container.hpp"
 #include "core/render_context.hpp"
-#include "ui/elements/button.hpp"
 
-UIContainer::UIContainer() = default;
-UIContainer::~UIContainer() = default;
+UIContainer::UIContainer(const UITransform &transform) : UIElement(transform) {}
 
-void UIContainer::add(std::unique_ptr<UIElement> ele) {
-  eles_.push_back(std::move(ele));
+// UIContainer::~UIContainer() = default;
+
+UIElement &UIContainer::add(std::unique_ptr<UIElement> ele) {
+  children_.push_back(std::move(ele));
+  return *children_.back().get();
 }
 
-std::queue<UICmd> UIContainer::handleEvents(const Input &input) {
-  std::queue<UICmd> cmds;
-  for (auto &el : eles_) {
+void UIContainer::handleEvents(const Input &input, const UISpace &space,
+                               UIEventSink &sink) {
+  if (!visible_)
+    return;
+  for (auto &el : children_) {
     if (el->visible()) {
-      el->handleEvents(input);
-      UIButton *but = dynamic_cast<UIButton *>(el.get());
-      if (but) {
-        if (but->clicked()) {
-          cmds.push(but->cmd());
-        }
-      }
+      el->handleEvents(input, space, sink);
     }
   }
-  return cmds;
 }
 
 void UIContainer::render(const RenderContext &ctx) const {
-  for (auto &el : eles_) {
+  if (!visible_)
+    return;
+
+  UIElement::render(ctx);
+  for (auto &el : children_) {
     if (el->visible()) {
       el->render(ctx);
     }
   }
 }
+
 void UIContainer::update(const float dt) {
-  for (auto &el : eles_) {
+  if (!visible_)
+    return;
+
+  for (auto &el : children_) {
     if (el->visible()) {
       el->update(dt);
     }

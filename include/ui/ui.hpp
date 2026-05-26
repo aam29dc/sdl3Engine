@@ -1,39 +1,43 @@
 #pragma once
-#include "core/render_context.hpp"
 #include <memory>
-#include <queue>
 #include <vector>
 
+#include "ui/menu/id.hpp"
+
 class Menu;
-enum class MenuID;
-enum class UICmd;
-class PlayScreen;
-class MainScreen;
-class Renderer;
+class MainMenu;
+class PauseMenu;
+class SettingsMenu;
+class PlayMenu;
+
 class Input;
+class UIEventSink;
+
+struct RenderContext;
+struct UISpace;
 struct HUDData;
 
 class UI {
 private:
-  //  std::vector<std::unique_ptr<Menu>> screens_{};
-  std::vector<MenuID> stack_{}; // is a stack ids, only ids of unique type can
-                                // be pushed (no two of same type)
-                                // stack_ should never contain playScreen_
-  std::unique_ptr<MainScreen>
-      menuScreen_{}; // preallocated menu, instead of std::vector allocated menu
-                     // will just list every menu here
-  //
-  std::unique_ptr<PlayScreen> playScreen_{};
-  bool playState_{false};
+  std::unique_ptr<MainMenu> mainMenu_;
+  // std::unique_ptr<PauseMenu> pauseMenu_;
+  // std::unique_ptr<SettingsMenu> settingsMenu_;
+  std::unique_ptr<PlayMenu> playMenu_;
+
+  std::vector<MenuID> stack_;
 
 public:
-  UI(RenderContext &ctx); // start off with menuScreen allocated
+  UI(RenderContext &ctx);
   ~UI();
-  void push(const MenuID screen);
+
+  void push(MenuID id);
   void pop();
 
-  std::queue<UICmd> handleEvents(const Input &input);
-  void update(const HUDData &hud, const float dt);
-  void render(const RenderContext &ctx) const;
-  void playState(const bool active) { playState_ = active; }
+  void handleEvents(const Input &, const UISpace &, UIEventSink &);
+  void update(const HUDData &, float dt);
+  void render(const RenderContext &) const;
+
+private:
+  Menu *get(MenuID id);
+  const Menu *get(MenuID id) const;
 };

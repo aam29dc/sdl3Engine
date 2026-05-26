@@ -15,7 +15,7 @@ bool Renderer::init(Window *window) {
   if (!window) {
     return false;
   }
-  renderer_ = SDL_CreateRenderer(window->get(), nullptr);
+  renderer_ = SDL_CreateRenderer(window->get(), "opengl");
   if (!renderer_) {
     SDL_Log("SDL_CreateRenderer failed: %s", SDL_GetError());
     return false;
@@ -41,12 +41,4 @@ void Renderer::draw(SDL_Texture *texture, const SDL_FRect *src,
                     const SDL_FRect *dst) const {
   SDL_RenderTexture(renderer_, texture, src, dst);
 }
-
-/* void Renderer::draw(const TextureManager &textures,
-                       const TextureHandle handle, const SDL_FRect *src,
-                       const SDL_FRect *dst) {
-  SDL_RenderTexture(renderer_, textures.get(handle.id), src, dst);
-}
-*/
-
 SDL_Renderer *Renderer::get() { return renderer_; }

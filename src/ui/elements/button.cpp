@@ -1,43 +1,35 @@
 #include "ui/elements/button.hpp"
 #include "core/input.hpp"
-#include "core/render_context.hpp"
-#include "core/renderer.hpp"
+#include "ui/elements/container.hpp"
+#include "ui/layout.hpp"
 
-UIButton::UIButton(const SDL_FRect &rect, const UICmd cmd)
-    : UIElement(rect), cmd_(cmd) {}
-// enum class MouseButton : u8 { Left = 0, Middle = 1, Right = 2, Count = 3 };
+UIButton::UIButton(const UITransform &transform, const UICmd cmd)
+    : UIElement(transform), cmd_(cmd) {}
 
-void UIButton::handleEvents(const Input &input) {
+void UIButton::handleEvents(const Input &input, const UISpace &space,
+                            UIEventSink &sink) {
+  if (!visible_)
+    return;
   const Int2 mpos = input.getMousePos();
+  const SDL_FRect rect = resolveRect(transform_, space);
 
-  hovered_ = ((mpos.x >= rect_.x && mpos.x <= rect_.x + rect_.w) &&
-              (mpos.y >= rect_.y && mpos.y <= rect_.y + rect_.h));
+  styleParams_.hovered = ((mpos.x >= rect.x && mpos.x <= rect.x + rect.w) &&
+                          (mpos.y >= rect.y && mpos.y <= rect.y + rect.h));
 
-  pressed_ = (hovered_ && input.isMouseDown(Input::MouseButton::Left));
-  clicked_ = (hovered_ && input.isMouseReleased(Input::MouseButton::Left));
+  styleParams_.pressed =
+      (styleParams_.hovered && input.isMouseDown(Input::MouseButton::Left));
+  clicked_ =
+      (styleParams_.hovered && input.isMouseReleased(Input::MouseButton::Left));
 
-  UIElement::handleEvents(input);
+  if (clicked_ && cmd_ != UICmd::None) {
+    sink.push({cmd_, id_});
+  }
 }
 
-void UIButton::update(const float dt) {
-  if (clicked_ && cmd_ != UICmd::None) {
+void UIButton::update(const float) {
+  if (clicked_) {
     clicked_ = false;
   }
-
-  UIElement::update(dt);
-}
-
-void UIButton::render(const RenderContext &ctx) const {
-  if (pressed_)
-    ctx.renderer.setDrawColor(hover_);
-  else if (hovered_)
-    ctx.renderer.setDrawColor(click_);
-  else
-    ctx.renderer.setDrawColor(color_);
-
-  ctx.renderer.drawFillRect(rect_);
-  ctx.renderer.setDrawColor(outline_);
-  ctx.renderer.drawRect(rect_);
-
-  UIElement::render(ctx);
+  if (!visible_)
+    return;
 }

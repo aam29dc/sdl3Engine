@@ -13,8 +13,9 @@ Window::~Window() {
 bool Window::init(const i32 windowWidth, const i32 windowHeight) {
   windowWidth_ = windowWidth;
   windowHeight_ = windowHeight;
-  window_ = SDL_CreateWindow("sdl3Game", windowWidth_, windowHeight_,
-                             SDL_WINDOW_RESIZABLE);
+  window_ =
+      SDL_CreateWindow("sdl3Game", windowWidth_, windowHeight_,
+                       SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY);
   if (!window_) {
     SDL_Log("SDL_CreateWindow failed: %s", SDL_GetError());
     return false;

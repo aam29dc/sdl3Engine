@@ -3,9 +3,12 @@
 class Renderer;
 class TextureManager;
 class FontManager;
+struct UISpace;
 
 struct RenderContext {
   Renderer &renderer;
-  TextureManager &textures;
-  FontManager &fonts;
+
+  const TextureManager &textures;
+  const FontManager &fonts;
+  const UISpace &uiSpace;
 };

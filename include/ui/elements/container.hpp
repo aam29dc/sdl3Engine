@@ -1,28 +1,26 @@
 #pragma once
-#include "core/render_context.hpp"
-#include "ui/cmds.hpp"
+#include "ui/elements/element.hpp"
+#include "ui/eventsink.hpp"
 #include <SDL3/SDL_events.h>
 #include <memory>
-#include <queue>
 #include <vector>
 
-struct RenderContext;
-class UIElement;
 class Engine;
 class Renderer;
 class Input;
 
-class UIContainer {
+class UIContainer : public UIElement {
 private:
-  std::vector<std::unique_ptr<UIElement>> eles_;
+  std::vector<std::unique_ptr<UIElement>> children_;
 
 public:
-  UIContainer();
-  ~UIContainer();
+  UIContainer(const UITransform &transform);
+  virtual ~UIContainer() override = default;
 
-  void add(std::unique_ptr<UIElement> ele);
+  UIElement &add(std::unique_ptr<UIElement> ele);
 
-  std::queue<UICmd> handleEvents(const Input &input);
-  void render(const RenderContext &ctx) const;
-  void update(const float dt);
+  void handleEvents(const Input &input, const UISpace &space,
+                    UIEventSink &sink) override;
+  void render(const RenderContext &ctx) const override;
+  void update(const float dt) override;
 };

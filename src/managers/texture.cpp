@@ -5,8 +5,10 @@
 #include <SDL3_image/SDL_image.h>
 #include <iostream>
 
-TextureHandle TextureManager::load(Renderer &renderer,
-                                   const std::string &imgFile) {
+TextureManager::~TextureManager() { clear(); }
+
+TextureHandle TextureManager::loadFromFile(Renderer &renderer,
+                                           const std::string &imgFile) {
   SDL_Texture *texture = IMG_LoadTexture(renderer.get(), imgFile.c_str());
 
   if (!texture) {
@@ -14,42 +16,54 @@ TextureHandle TextureManager::load(Renderer &renderer,
               << " Failed to load: " << SDL_GetError() << std::endl;
     return {0};
   }
-  u32 id = nextID_++;
-  textures_[id] = texture;
-  return {id};
+
+  u32 index = 0;
+
+  if (!freeSlots_.empty()) {
+    index = freeSlots_.back();
+    freeSlots_.pop_back();
+    textures_[index].generation++;
+    textures_[index].texture = texture;
+  } else {
+    index = textures_.size();
+    textures_.push_back({texture});
+  }
+
+  return {index, textures_[index].generation};
 }
 
-TextureHandle TextureManager::load(SDL_Texture *texture) {
-  if (!texture)
-    return {0};
-  u32 id = nextID_++;
-  textures_[id] = texture;
-  return {id};
+TextureHandle TextureManager::loadFromSurface(Renderer &, SDL_Surface *) {
+  return {};
 }
 
-bool TextureManager::remove(u32 id) {
-  auto it = textures_.find(id);
-  if (it == textures_.end())
-    return false;
+TextureHandle TextureManager::adopt(SDL_Texture *) { return {}; }
 
-  SDL_DestroyTexture(it->second);
-  textures_.erase(it);
-
+bool TextureManager::remove(TextureHandle handle) {
+  if (textures_[handle.id].texture != nullptr) {
+    SDL_DestroyTexture(textures_[handle.id].texture);
+    textures_[handle.id].generation++;
+    textures_[handle.id].texture = nullptr;
+    freeSlots_.push_back(handle.id);
+  }
   return true;
 }
 
+bool TextureManager::valid(TextureHandle handle) const {
+  const auto &entry = textures_.at(handle.id);
+  return entry.texture != nullptr && entry.generation == handle.generation;
+}
+
 void TextureManager::clear() {
-  for (auto &[id, texture] : textures_) {
+  for (auto &[texture, id] : textures_) {
     SDL_DestroyTexture(texture);
   }
 
   textures_.clear();
 }
 
-SDL_Texture *TextureManager::get(u32 id) const {
-  auto it = textures_.find(id);
-  if (it == textures_.end()) {
-    return nullptr;
+const SDL_Texture *TextureManager::get(const TextureHandle handle) const {
+  if (valid(handle)) {
+    return textures_.at(handle.id).texture;
   }
-  return it->second;
+  return nullptr;
 }

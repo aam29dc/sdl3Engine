@@ -1,5 +1,4 @@
 #pragma once
-#include "core/render_context.hpp"
 #include "states/gameState.hpp"
 #include "ui/hud.hpp"
 
@@ -10,10 +9,10 @@ public:
   PlayState();
   ~PlayState();
 
-  void handleEvents(Engine &engine) override;
-  HUDData update(Engine &engine, const float dt) override;
-  void render(const RenderContext &ctx) const override;
+  void handleEvents(FrameContext &frameCtx) override;
+  HUDData update(UpdateContext &updateCtx, const float dt) override;
+  void render(const RenderContext &renderCtx) const override;
 
-  void onEnter(Engine &engine) override;
-  void onExit(Engine &engine) override;
+  void onEnter(UpdateContext &updateCtx) override;
+  void onExit(UpdateContext &updateCtx) override;
 };

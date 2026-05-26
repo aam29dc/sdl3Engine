@@ -4,23 +4,19 @@
 #include <iostream>
 
 bool FontManager::init(const std::string &fontPath) {
-  if (!TTF_Init()) {
-    std::cout << "TTF_Init failed: " << SDL_GetError() << "\n";
-    return false;
-  }
-  small_ = TTF_OpenFont(fontPath.c_str(), TEXTSIZE_SMALL);
-  medium_ = TTF_OpenFont(fontPath.c_str(), TEXTSIZE_MEDIUM);
-  large_ = TTF_OpenFont(fontPath.c_str(), TEXTSIZE_LARGE);
+  fonts_[0] = TTF_OpenFont(fontPath.c_str(), TEXTSIZE_SMALL);
+  fonts_[1] = TTF_OpenFont(fontPath.c_str(), TEXTSIZE_MEDIUM);
+  fonts_[2] = TTF_OpenFont(fontPath.c_str(), TEXTSIZE_LARGE);
 
-  if (!small_ || !medium_ || !large_) {
+  if (!fonts_[0] || !fonts_[1] || !fonts_[2]) {
     std::cout << "TTF_OpenFont failed: " << SDL_GetError() << "\n";
-    if (small_)
-      TTF_CloseFont(small_);
-    if (medium_)
-      TTF_CloseFont(medium_);
-    if (large_)
-      TTF_CloseFont(large_);
-    small_ = medium_ = large_ = nullptr;
+    if (fonts_[0])
+      TTF_CloseFont(fonts_[0]);
+    if (fonts_[1])
+      TTF_CloseFont(fonts_[1]);
+    if (fonts_[2])
+      TTF_CloseFont(fonts_[2]);
+    fonts_[0] = fonts_[1] = fonts_[2] = nullptr;
     TTF_Quit();
     return false;
   }
@@ -28,21 +24,20 @@ bool FontManager::init(const std::string &fontPath) {
 }
 
 FontManager::~FontManager() {
-  if (small_) {
-    TTF_CloseFont(small_);
+  if (fonts_[0]) {
+    TTF_CloseFont(fonts_[0]);
   }
-  if (medium_) {
-    TTF_CloseFont(medium_);
+  if (fonts_[1]) {
+    TTF_CloseFont(fonts_[1]);
   }
-  if (large_) {
-    TTF_CloseFont(large_);
+  if (fonts_[2]) {
+    TTF_CloseFont(fonts_[2]);
   }
-  small_ = medium_ = large_ = nullptr;
-  TTF_Quit();
 }
 
 SDL_Texture *FontManager::getText(Renderer *renderer, const std::string &text,
-                                  const FontSize size) const {
+                                  const SDL_Color &color, const FontSize size,
+                                  const float wrapWidth) const {
   if (text.empty()) {
     return nullptr;
   }
@@ -50,32 +45,42 @@ SDL_Texture *FontManager::getText(Renderer *renderer, const std::string &text,
   TTF_Font *font = nullptr;
   switch (size) {
   case FontSize::Large:
-    font = large_;
+    font = fonts_[2];
     break;
   case FontSize::Medium:
-    font = medium_;
+    font = fonts_[1];
     break;
   case FontSize::Small:
-    font = small_;
+    font = fonts_[0];
+    break;
+  case FontSize::Count:
     break;
   }
   if (!font)
     return nullptr;
 
-  SDL_Surface *surface =
-      TTF_RenderText_Solid(font, text.c_str(), text.length(), color_);
+  SDL_Surface *surface = nullptr;
+
+  if (wrapWidth > 0.0f) {
+    surface = TTF_RenderText_Solid_Wrapped(font, text.c_str(), text.length(),
+                                           color, wrapWidth);
+  } else {
+    surface = TTF_RenderText_Solid(font, text.c_str(), text.length(), color);
+  }
   if (!surface) {
     std::cout << "Text surface error: " << SDL_GetError() << "\n";
     return nullptr;
   }
 
   SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer->get(), surface);
+
+  SDL_DestroySurface(surface);
+
   if (!texture) {
     std::cout << "SDL_CreateTextureFromSurface failed: " << SDL_GetError()
               << "\n";
-    SDL_DestroySurface(surface);
     return nullptr;
   }
-  SDL_DestroySurface(surface);
+
   return texture;
 }
