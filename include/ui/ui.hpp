@@ -33,8 +33,8 @@ public:
   void push(MenuID id);
   void pop();
 
-  void handleEvents(const Input &, const UISpace &, UIEventSink &);
-  void update(const HUDData &, float dt);
+  void handleEvents(const Input &, UIEventSink &);
+  void update(const UISpace &space, const HUDData &, float dt);
   void render(const RenderContext &) const;
 
 private:

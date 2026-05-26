@@ -1,20 +1,21 @@
 #include "ui/elements/button.hpp"
 #include "core/input.hpp"
 #include "ui/elements/container.hpp"
+#include "ui/elements/element.hpp"
 #include "ui/layout.hpp"
 
 UIButton::UIButton(const UITransform &transform, const UICmd cmd)
     : UIElement(transform), cmd_(cmd) {}
 
-void UIButton::handleEvents(const Input &input, const UISpace &space,
-                            UIEventSink &sink) {
+void UIButton::handleEvents(const Input &input, UIEventSink &sink) {
   if (!visible_)
     return;
   const Int2 mpos = input.getMousePos();
-  const SDL_FRect rect = resolveRect(transform_, space);
 
-  styleParams_.hovered = ((mpos.x >= rect.x && mpos.x <= rect.x + rect.w) &&
-                          (mpos.y >= rect.y && mpos.y <= rect.y + rect.h));
+  styleParams_.hovered = ((mpos.x >= resolvedRect_.x &&
+                           mpos.x <= resolvedRect_.x + resolvedRect_.w) &&
+                          (mpos.y >= resolvedRect_.y &&
+                           mpos.y <= resolvedRect_.y + resolvedRect_.h));
 
   styleParams_.pressed =
       (styleParams_.hovered && input.isMouseDown(Input::MouseButton::Left));
@@ -26,10 +27,9 @@ void UIButton::handleEvents(const Input &input, const UISpace &space,
   }
 }
 
-void UIButton::update(const float) {
+void UIButton::update(const UISpace &space, const float dt) {
   if (clicked_) {
     clicked_ = false;
   }
-  if (!visible_)
-    return;
+  UIElement::update(space, dt);
 }

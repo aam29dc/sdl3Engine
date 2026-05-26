@@ -20,6 +20,13 @@
 #include <memory>
 
 bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
+  if (!SDL_Init(SDL_INIT_VIDEO)) {
+    SDL_Log("Init failed: %s", SDL_GetError());
+    return false;
+  }
+
+  time_.init();
+
   window_ = std::make_unique<Window>();
   renderer_ = std::make_unique<Renderer>();
 
@@ -73,6 +80,22 @@ bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
   return true;
 }
 
+void Engine::run() {
+  while (!quit_) {
+    SDL_Event e;
+    time_.tick();
+    input().beginFrame(); // calls getKeyBoardState
+    while (SDL_PollEvent(&e)) {
+      if (e.type == SDL_EVENT_QUIT || window().getQuit())
+        quit_ = true;
+
+      handleEvents(e);
+    }
+    update(time_.dt());
+    render();
+  }
+}
+
 void Engine::handleEvents(const SDL_Event &e) {
   window_->handleEvent(e);
   input_.handleEvent(e);
@@ -85,7 +108,7 @@ void Engine::update(float dt) {
   FrameContext frameCtx = {*window_, input_};
 
   sink_.clear();
-  ui_->handleEvents(input_, space, sink_);
+  ui_->handleEvents(input_, sink_);
   if (play_)
     play_->handleEvents(frameCtx);
 
@@ -139,8 +162,8 @@ void Engine::update(float dt) {
 
   if (play_)
     hud = play_->update(updateCtx, dt);
-  else
-    ui_->update(hud, dt);
+
+  ui_->update(space, hud, dt);
 }
 
 void Engine::render() const {

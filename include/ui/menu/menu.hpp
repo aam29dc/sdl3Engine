@@ -18,9 +18,8 @@ public:
                 const UITransform &transform = {{0, 0, 0, 0}, Anchor::TopLeft});
   virtual ~Menu() = default;
 
-  void handleEvents(const Input &input, const UISpace &space,
-                    UIEventSink &sink);
-  virtual void update(const float dt);
+  void handleEvents(const Input &input, UIEventSink &sink);
+  virtual void update(const UISpace &space, const float dt);
   virtual void render(const RenderContext &ctx) const;
   virtual void onEnter();
   virtual void onExit();

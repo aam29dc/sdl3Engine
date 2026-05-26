@@ -1,17 +1,18 @@
 ```
-include 
+```
+include
 ├── core
 │   ├── command_context.hpp
 │   ├── commands.hpp
 │   ├── console.hpp
 │   ├── engine.hpp
 │   ├── frame_context.hpp
-│   ├── game.hpp
 │   ├── handles.hpp
 │   ├── input.hpp
 │   ├── render_context.hpp
 │   ├── renderer.hpp
 │   ├── resource_context.hpp
+│   ├── time.hpp
 │   ├── types.hpp
 │   ├── update_context.hpp
 │   └── window.hpp
@@ -50,9 +51,9 @@ src
 │   ├── commands.cpp
 │   ├── console.cpp
 │   ├── engine.cpp
-│   ├── game.cpp
 │   ├── input.cpp
 │   ├── renderer.cpp
+│   ├── time.cpp
 │   └── window.cpp
 ├── main.cpp
 ├── managers
@@ -78,5 +79,5 @@ src
     │   └── textured.cpp
     └── ui.cpp
 ```
-
+```
 18 directories, 60 files

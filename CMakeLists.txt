@@ -21,7 +21,11 @@ target_include_directories(app PRIVATE
 )
 
 target_compile_options(app PRIVATE
-  -Wall -Wextra -Werror -Wno-error=unused-variable
+  -Wall
+  -Wextra
+  -Werror
+  -Wno-error=unused-variable
+  -Wno-error=unused-parameter
 )
 
 # -------------------------

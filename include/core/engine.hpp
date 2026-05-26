@@ -1,8 +1,8 @@
 #pragma once
 #include "core/console.hpp"
 #include "core/input.hpp"
+#include "core/time.hpp"
 #include "ui/eventsink.hpp"
-
 #include <memory>
 
 class UI;
@@ -26,6 +26,8 @@ private:
 
   Console console_;
   UIEventSink sink_;
+  Time time_;
+  bool quit_ = false;
 
 public:
   Engine();
@@ -54,6 +56,7 @@ public:
   Engine &operator=(Engine &&) = delete;
 
   bool init(const i32 windowWidth, const i32 windowHeight);
+  void run();
   void handleEvents(const SDL_Event &e);
   void update(const float dt);
   void render() const;

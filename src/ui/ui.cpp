@@ -37,16 +37,15 @@ void UI::pop() {
 }
 
 // call corresponding menu function, we used a switch since we wont have many
-void UI::handleEvents(const Input &input, const UISpace &space,
-                      UIEventSink &sink) {
+void UI::handleEvents(const Input &input, UIEventSink &sink) {
   switch (stack_.back()) {
   case MenuID::Menu:
   default:
     return;
   case MenuID::Main:
-    return mainMenu_->handleEvents(input, space, sink);
+    return mainMenu_->handleEvents(input, sink);
   case MenuID::Play:
-    return playMenu_->handleEvents(input, space, sink);
+    return playMenu_->handleEvents(input, sink);
   case MenuID::Pause:
   case MenuID::Audio:
   case MenuID::Controls:
@@ -56,10 +55,10 @@ void UI::handleEvents(const Input &input, const UISpace &space,
   }
 }
 
-void UI::update(const HUDData &hud, const float dt) {
+void UI::update(const UISpace &space, const HUDData &hud, const float dt) {
   // update playMenu first
   if (std::find(stack_.begin(), stack_.end(), MenuID::Play) != stack_.end()) {
-    playMenu_->update(dt);
+    playMenu_->update(space, dt);
     playMenu_->setHUDData(hud);
   }
 
@@ -68,7 +67,7 @@ void UI::update(const HUDData &hud, const float dt) {
   default:
     break;
   case MenuID::Main:
-    mainMenu_->update(dt);
+    mainMenu_->update(space, dt);
     break;
   case MenuID::Play:
     // always update PlayMenu, above, thus do nothing here

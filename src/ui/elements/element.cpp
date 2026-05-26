@@ -10,31 +10,33 @@ UIElement::UIElement(const UITransform &transform) : transform_(transform) {
 
 UIElement::~UIElement() = default;
 
-void UIElement::handleEvents(const Input &, const UISpace &, UIEventSink &) {
+void UIElement::handleEvents(const Input &, UIEventSink &) {
   if (!visible_)
     return;
 }
 
-void UIElement::update(const float) {
+void UIElement::update(const UISpace &space, const float) {
   if (!visible_)
     return;
+  if (any(dirty_)) {
+    resolvedRect_ = resolveRect(transform_, space);
+  }
 }
 
 void UIElement::render(const RenderContext &ctx) const {
   if (!visible_)
     return;
 
-  SDL_FRect rect = resolveRect(transform_, ctx.uiSpace);
-
   if (style_) {
-    style_->render(rect, styleParams_, ctx);
+    style_->render(resolvedRect_, styleParams_, ctx);
   }
 
   for (const auto &c : contents_) {
-    c->render(rect, ctx);
+    c->render(resolvedRect_, ctx);
   }
 }
 
+void UIElement::parent(UIContainer *root) { parent_ = root; }
 UITransform &UIElement::transform() { return transform_; }
 i32 UIElement::id() const { return id_; }
 bool UIElement::visible() const { return visible_; }

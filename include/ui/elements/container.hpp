@@ -8,6 +8,7 @@
 class Engine;
 class Renderer;
 class Input;
+struct UISpace;
 
 class UIContainer : public UIElement {
 private:
@@ -19,8 +20,7 @@ public:
 
   UIElement &add(std::unique_ptr<UIElement> ele);
 
-  void handleEvents(const Input &input, const UISpace &space,
-                    UIEventSink &sink) override;
+  void handleEvents(const Input &input, UIEventSink &sink) override;
   void render(const RenderContext &ctx) const override;
-  void update(const float dt) override;
+  void update(const UISpace &space, const float dt) override;
 };

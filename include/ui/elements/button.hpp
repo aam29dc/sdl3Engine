@@ -12,10 +12,9 @@ public:
   UIButton(const UITransform &transform, const UICmd cmd);
   virtual ~UIButton() override = default;
 
-  virtual void handleEvents(const Input &input, const UISpace &space,
-                            UIEventSink &sink) override;
+  virtual void handleEvents(const Input &input, UIEventSink &sink) override;
 
-  virtual void update(const float dt) override;
+  virtual void update(const UISpace &space, const float dt) override;
 
   bool clicked() const { return clicked_; }
   bool pressed() const { return styleParams_.pressed; }

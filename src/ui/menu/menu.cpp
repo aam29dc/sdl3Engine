@@ -25,12 +25,13 @@ std::string menuIDtoString(const MenuID id) {
 Menu::Menu(const RenderContext &, const MenuID id, const UITransform &transform)
     : root_(transform), id_(id) {}
 
-void Menu::handleEvents(const Input &input, const UISpace &space,
-                        UIEventSink &sink) {
-  return root_.handleEvents(input, space, sink);
+void Menu::handleEvents(const Input &input, UIEventSink &sink) {
+  return root_.handleEvents(input, sink);
 }
 
-void Menu::update(const float dt) { root_.update(dt); }
+void Menu::update(const UISpace &space, const float dt) {
+  root_.update(space, dt);
+}
 
 void Menu::render(const RenderContext &ctx) const { root_.render(ctx); }
 
