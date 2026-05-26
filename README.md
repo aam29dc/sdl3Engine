@@ -1,20 +1,22 @@
 ```
-```
 include
 ├── core
-│   ├── command_context.hpp
+│   ├── camera.hpp
 │   ├── commands.hpp
 │   ├── console.hpp
+│   ├── context
+│   │   ├── command.hpp
+│   │   ├── frame.hpp
+│   │   ├── render.hpp
+│   │   ├── resource.hpp
+│   │   ├── update.hpp
+│   │   └── world.hpp
 │   ├── engine.hpp
-│   ├── frame_context.hpp
 │   ├── handles.hpp
 │   ├── input.hpp
-│   ├── render_context.hpp
 │   ├── renderer.hpp
-│   ├── resource_context.hpp
 │   ├── time.hpp
 │   ├── types.hpp
-│   ├── update_context.hpp
 │   └── window.hpp
 ├── managers
 │   ├── font.hpp
@@ -48,6 +50,7 @@ include
     └── ui.hpp
 src
 ├── core
+│   ├── camera.cpp
 │   ├── commands.cpp
 │   ├── console.cpp
 │   ├── engine.cpp
@@ -78,6 +81,6 @@ src
     │   ├── solid.cpp
     │   └── textured.cpp
     └── ui.cpp
+
+19 directories, 63 files
 ```
-```
-18 directories, 60 files
