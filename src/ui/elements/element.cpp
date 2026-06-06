@@ -1,5 +1,5 @@
 #include "ui/elements/element.hpp"
-#include "core/render_context.hpp"
+#include "core/context/render.hpp"
 #include "ui/content/content.hpp"
 #include "ui/layout.hpp"
 #include "ui/style/solid.hpp"
@@ -36,8 +36,32 @@ void UIElement::render(const RenderContext &ctx) const {
   }
 }
 
+void UIElement::markDirty(const Dirty d) {
+  if (d != Dirty::None) {
+    dirty_ |= d;
+  }
+}
+
+void UIElement::style(std::unique_ptr<UIStyle> style) {
+  if (style) {
+    style_ = std::move(style);
+    markDirty(Dirty::Render);
+  }
+}
+
+void UIElement::addContent(std::unique_ptr<UIContent> content) {
+  if (content) {
+    contents_.push_back(std::move(content));
+    markDirty(Dirty::Render);
+  }
+}
+
 void UIElement::parent(UIContainer *root) { parent_ = root; }
+
 UITransform &UIElement::transform() { return transform_; }
+
 i32 UIElement::id() const { return id_; }
+
 bool UIElement::visible() const { return visible_; }
+
 void UIElement::visible(bool value) { visible_ = value; }

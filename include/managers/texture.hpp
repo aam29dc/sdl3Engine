@@ -11,12 +11,12 @@ class SDL_Surface;
 
 class TextureManager {
 private:
-  struct Entry {
+  struct Slot {
     SDL_Texture *texture = nullptr;
     u32 generation = 1;
   };
 
-  std::vector<Entry> textures_;
+  std::vector<Slot> textures_;
   std::vector<u32> freeSlots_;
 
 public:
@@ -28,7 +28,7 @@ public:
   bool remove(TextureHandle handle);
   bool valid(TextureHandle handle) const;
 
-  const SDL_Texture *get(const TextureHandle handle) const;
+  SDL_Texture *get(const TextureHandle handle) const;
 
   void clear();
 };

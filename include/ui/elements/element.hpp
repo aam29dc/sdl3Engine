@@ -36,7 +36,7 @@ public:
   virtual void handleEvents(const Input &input, UIEventSink &sink);
   virtual void update(const UISpace &space, const float dt);
   virtual void render(const RenderContext &ctx) const;
-  void markDirty();
+  void markDirty(const Dirty d);
 
   void style(std::unique_ptr<UIStyle> style);
   void addContent(std::unique_ptr<UIContent> content);

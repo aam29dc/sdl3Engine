@@ -1,5 +1,5 @@
 #include "core/console.hpp"
-#include "core/command_context.hpp"
+#include "core/context/command.hpp"
 #include <iostream>
 #include <sstream>
 #include <string>

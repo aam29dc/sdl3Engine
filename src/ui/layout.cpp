@@ -47,7 +47,6 @@ SDL_FRect resolveRect(const UITransform &t, const UISpace &space) {
   SDL_FRect out{};
 
   switch (t.sizeMode) {
-
   case UISizeMode::Uniform: {
     const SDL_FPoint anchor = getAnchorPoint(t.anchor, space);
 

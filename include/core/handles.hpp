@@ -15,3 +15,8 @@ struct FontHandle {
   std::uint32_t id = 0;
   std::uint32_t generation = 0;
 };
+
+struct EntityHandle {
+  std::uint32_t id = 0;
+  std::uint32_t generation = 0;
+};

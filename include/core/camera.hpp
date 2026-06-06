@@ -8,17 +8,23 @@ private:
   float zoom_ = 1.0f;
 
 public:
-  Camera(const Float2 &size);
+  Camera(const Float2 &size = {1440.0f, 900.0f});
   ~Camera() = default;
+
+  Camera(const Camera &) = default;
+  Camera &operator=(const Camera &) = default;
+  Camera(Camera &&) = default;
+  Camera &operator=(Camera &&) = default;
 
   void move(const Float2 dt);
 
-  SDL_FRect worldToScreen(const SDL_FRect worldRect);
-  SDL_FRect screenToWorld(const SDL_FRect rect);
+  SDL_FRect worldToScreen(const SDL_FRect &worldRect) const;
+  SDL_FRect screenToWorld(const SDL_FRect &rect) const;
 
-  void setPosition(const Float2 pos);
-  void setSize(const Float2 value);
-  void setZoom(const float value);
+  void setPosition(const Float2 pos); // set camera pos in world
+  void setSize(const Float2 size);    // set viewport size
+  void setZoom(const float zoom);     // scale the world
+  void follow(const SDL_FRect &rect);
 
   Float2 position() const;
   Float2 size() const;

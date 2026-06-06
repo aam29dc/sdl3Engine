@@ -1,5 +1,5 @@
 #include "core/commands.hpp"
-#include "core/command_context.hpp"
+#include "core/context/command.hpp"
 #include "core/engine.hpp"
 
 void cmd_clear(CommandContext &cmdCtx, const Console::Args &) {

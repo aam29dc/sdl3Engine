@@ -1,12 +1,16 @@
 #pragma once
 #include "core/camera.hpp"
+#include "managers/entity.hpp"
+#include "render/system.hpp"
 #include "states/gameState.hpp"
 #include "ui/hud.hpp"
 
 class PlayState : public GameState {
 private:
   HUDData hud_{};
-  Camera camera_;
+  Camera camera_{};
+  EntityManager entities_;
+  RenderSystem renderSystem_;
 
 public:
   PlayState();

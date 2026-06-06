@@ -2,6 +2,6 @@
 #include "core/console.hpp"
 #include "core/context/command.hpp"
 
-void cmd_clear(CommandContext &frameCtx, const Console::Args &);
+void cmd_clear(CommandContext &cmdCtx, const Console::Args &);
 
-void cmd_echo(CommandContext &frameCtx, const Console::Args &args);
+void cmd_echo(CommandContext &cmdCtx, const Console::Args &args);

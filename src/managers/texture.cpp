@@ -61,7 +61,7 @@ void TextureManager::clear() {
   textures_.clear();
 }
 
-const SDL_Texture *TextureManager::get(const TextureHandle handle) const {
+SDL_Texture *TextureManager::get(const TextureHandle handle) const {
   if (valid(handle)) {
     return textures_.at(handle.id).texture;
   }

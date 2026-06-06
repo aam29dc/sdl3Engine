@@ -74,7 +74,7 @@ bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
   console_.addCommand("clear", cmd_clear);
   console_.addCommand("echo", cmd_echo);
 
-  play_ = std::make_unique<PlayState>();
+  //  play_ = std::make_unique<PlayState>();
   //  play_->onEnter(renderCtx);
 
   return true;
