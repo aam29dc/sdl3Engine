@@ -19,8 +19,16 @@ include
 │   ├── types.hpp
 │   └── window.hpp
 ├── managers
+│   ├── entity.hpp
 │   ├── font.hpp
 │   └── texture.hpp
+├── objects
+│   └── entity.hpp
+├── render
+│   ├── rect.hpp
+│   ├── renderable.hpp
+│   ├── sprite.hpp
+│   └── system.hpp
 ├── states
 │   ├── gameState.hpp
 │   └── playState.hpp
@@ -60,8 +68,15 @@ src
 │   └── window.cpp
 ├── main.cpp
 ├── managers
+│   ├── entity.cpp
 │   ├── font.cpp
 │   └── texture.cpp
+├── objects
+│   └── entity.cpp
+├── render
+│   ├── rect.cpp
+│   ├── sprite.cpp
+│   └── system.cpp
 ├── states
 │   └── playState.cpp
 └── ui
@@ -82,5 +97,5 @@ src
     │   └── textured.cpp
     └── ui.cpp
 
-19 directories, 63 files
+23 directories, 74 files
 ```
