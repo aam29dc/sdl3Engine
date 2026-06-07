@@ -5,13 +5,12 @@
 #include "ui/menu/playMenu.hpp"
 #include <algorithm>
 
-UI::UI(RenderContext &ctx) { // we'd allocated all our menus seperately here,
-                             // then only push
-                             // menuMenu to stack
+UI::UI(ResourceContext &resouceCtx) { // we'd allocated all our menus seperately
+                                      // here, then only push menuMenu to stack
 
-  playMenu_ = std::make_unique<PlayMenu>(ctx);
+  playMenu_ = std::make_unique<PlayMenu>(resouceCtx);
   stack_.push_back(MenuID::Play);
-  mainMenu_ = std::make_unique<MainMenu>(ctx);
+  mainMenu_ = std::make_unique<MainMenu>(resouceCtx);
 
   stack_.push_back(MenuID::Main);
   mainMenu_->onEnter();

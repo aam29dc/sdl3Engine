@@ -23,7 +23,8 @@ std::string menuIDtoString(const MenuID id) {
   return "Unknown";
 }
 
-Menu::Menu(const RenderContext &, const MenuID id, const UITransform &transform)
+Menu::Menu(const ResourceContext &, const MenuID id,
+           const UITransform &transform)
     : root_(transform), id_(id) {}
 
 void Menu::handleEvents(const Input &input, UIEventSink &sink) {

@@ -65,12 +65,12 @@ bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
 
   textures_ = std::make_unique<TextureManager>();
 
-  const UISpace space = {(float)window_->getWidth(),
-                         (float)window_->getHeight()};
+  /*  const UISpace space = {(float)window_->getWidth(),
+                           (float)window_->getHeight()};
+  */
+  ResourceContext resourceCtx = {*textures_, *fonts_, *renderer_};
 
-  RenderContext renderCtx = {*renderer_, *textures_, *fonts_, space};
-
-  ui_ = std::make_unique<UI>(renderCtx);
+  ui_ = std::make_unique<UI>(resourceCtx);
 
   console_.addCommand("clear", cmd_clear);
   console_.addCommand("echo", cmd_echo);

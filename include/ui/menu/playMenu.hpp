@@ -2,13 +2,11 @@
 #include "ui/hud.hpp"
 #include "ui/menu/menu.hpp"
 
-struct RenderContext;
-
 class PlayMenu : public Menu {
 private:
   HUDData hud_{};
 
 public:
-  PlayMenu(RenderContext &ctx);
+  PlayMenu(ResourceContext &resourceCtx);
   void setHUDData(const HUDData &hud) { hud_ = hud; }
 };

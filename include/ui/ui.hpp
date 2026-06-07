@@ -28,7 +28,7 @@ private:
   std::vector<MenuID> stack_;
 
 public:
-  UI(RenderContext &ctx);
+  UI(ResourceContext &resourceCtx);
   ~UI();
 
   void push(MenuID id);

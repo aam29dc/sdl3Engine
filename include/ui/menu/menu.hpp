@@ -15,7 +15,7 @@ protected:
   MenuID id_ = MenuID::Menu;
 
 public:
-  explicit Menu(const RenderContext &, const MenuID id = MenuID::Menu,
+  explicit Menu(const ResourceContext &, const MenuID id = MenuID::Menu,
                 const UITransform &transform = {{0, 0, 0, 0}, Anchor::TopLeft});
   virtual ~Menu() = default;
 

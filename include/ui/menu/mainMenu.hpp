@@ -1,9 +1,9 @@
 #pragma once
-#include "core/context/render.hpp"
 #include "ui/menu/menu.hpp"
+struct ResourceContext;
 
 class MainMenu : public Menu {
 private:
 public:
-  MainMenu(RenderContext &renderCtx);
+  MainMenu(ResourceContext &resourceCtx);
 };

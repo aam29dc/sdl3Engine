@@ -9,7 +9,8 @@ private:
 public:
   explicit UIImageContent(TextureHandle handle);
 
-  void set(TextureHandle h);
+  void set(TextureHandle handle);
 
   void render(const SDL_FRect &rect, const RenderContext &ctx) const override;
+  void update(ResourceContext &resourceCtx, const float dt) override;
 };
