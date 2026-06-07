@@ -1,4 +1,5 @@
 #pragma once
+#include "core/context/resource.hpp"
 #include "ui/elements/element.hpp"
 #include "ui/eventsink.hpp"
 #include <SDL3/SDL_events.h>
@@ -22,5 +23,6 @@ public:
 
   void handleEvents(const Input &input, UIEventSink &sink) override;
   void render(const RenderContext &ctx) const override;
-  void update(const UISpace &space, const float dt) override;
+  void update(ResourceContext &resourceCtx, const UISpace &space,
+              const float dt) override;
 };

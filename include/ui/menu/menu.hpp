@@ -1,4 +1,5 @@
 #pragma once
+#include "core/context/resource.hpp"
 #include "ui/elements/container.hpp"
 #include "ui/eventsink.hpp"
 #include "ui/menu/id.hpp"
@@ -19,7 +20,8 @@ public:
   virtual ~Menu() = default;
 
   void handleEvents(const Input &input, UIEventSink &sink);
-  virtual void update(const UISpace &space, const float dt);
+  virtual void update(ResourceContext &resourceCtx, const UISpace &space,
+                      const float dt);
   virtual void render(const RenderContext &ctx) const;
   virtual void onEnter();
   virtual void onExit();

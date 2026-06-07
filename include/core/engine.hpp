@@ -1,5 +1,6 @@
 #pragma once
 #include "core/console.hpp"
+#include "core/context/resource.hpp"
 #include "core/input.hpp"
 #include "core/time.hpp"
 #include "ui/eventsink.hpp"

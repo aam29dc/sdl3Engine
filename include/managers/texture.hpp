@@ -21,12 +21,13 @@ private:
 
 public:
   ~TextureManager();
+
   TextureHandle loadFromFile(Renderer &, const std::string &);
   TextureHandle loadFromSurface(Renderer &, SDL_Surface *);
-  TextureHandle adopt(SDL_Texture *);
+  TextureHandle add(SDL_Texture *);
 
   bool remove(TextureHandle handle);
-  bool valid(TextureHandle handle) const;
+  bool valid(const TextureHandle handle) const;
 
   SDL_Texture *get(const TextureHandle handle) const;
 

@@ -2,6 +2,7 @@
 #include "core/commands.hpp"
 #include "core/context/frame.hpp"
 #include "core/context/render.hpp"
+#include "core/context/resource.hpp"
 #include "core/context/update.hpp"
 #include "core/renderer.hpp"
 #include "core/window.hpp"
@@ -163,7 +164,9 @@ void Engine::update(float dt) {
   if (play_)
     hud = play_->update(updateCtx, dt);
 
-  ui_->update(space, hud, dt);
+  ResourceContext resourceCtx = {*textures_, *fonts_, *renderer_};
+
+  ui_->update(resourceCtx, space, hud, dt);
 }
 
 void Engine::render() const {

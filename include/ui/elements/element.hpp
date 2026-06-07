@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 
+#include "core/context/resource.hpp"
 #include "core/types.hpp"
 #include "ui/dirty.hpp"
 #include "ui/layout.hpp"
@@ -13,6 +14,7 @@ class UIEventSink;
 struct UISpace;
 class UIContainer;
 struct RenderContext;
+struct ResourceContext;
 
 class UIElement {
 protected:
@@ -34,9 +36,11 @@ public:
   virtual ~UIElement();
 
   virtual void handleEvents(const Input &input, UIEventSink &sink);
-  virtual void update(const UISpace &space, const float dt);
+  virtual void update(ResourceContext &resourceCtx, const UISpace &space,
+                      const float dt);
   virtual void render(const RenderContext &ctx) const;
   void markDirty(const Dirty d);
+  bool dirty() const;
 
   void style(std::unique_ptr<UIStyle> style);
   void addContent(std::unique_ptr<UIContent> content);

@@ -34,15 +34,16 @@ void UIContainer::render(const RenderContext &ctx) const {
   }
 }
 
-void UIContainer::update(const UISpace &space, const float dt) {
+void UIContainer::update(ResourceContext &resourceCtx, const UISpace &space,
+                         const float dt) {
   if (!visible_)
     return;
 
-  UIElement::update(space, dt);
+  UIElement::update(resourceCtx, space, dt);
 
   for (auto &el : children_) {
     if (el->visible()) {
-      el->update(space, dt);
+      el->update(resourceCtx, space, dt);
     }
   }
 }

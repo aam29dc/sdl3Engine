@@ -7,7 +7,7 @@
 struct TTF_Font;
 class Renderer;
 class TextureManager;
-struct SDL_Texture;
+struct SDL_Surface;
 
 class FontManager {
 public:
@@ -36,9 +36,8 @@ public:
                                    SDL_Color color, float wrapWidth = 0.0f)
      const;*/
 
-  SDL_Texture *getText(Renderer *renderer, const std::string &text,
-                       const SDL_Color &color, const FontSize size,
-                       const float wrapWidth) const;
+  SDL_Surface *getText(const std::string &text, const SDL_Color &color,
+                       const FontSize size, const float wrapWidth) const;
 
   TTF_Font *get(FontSize size) const;
 };

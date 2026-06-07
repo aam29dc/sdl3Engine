@@ -1,4 +1,5 @@
 #pragma once
+#include "core/context/resource.hpp"
 #include "core/input.hpp"
 #include "ui/elements/element.hpp"
 #include "ui/eventsink.hpp"
@@ -14,7 +15,8 @@ public:
 
   virtual void handleEvents(const Input &input, UIEventSink &sink) override;
 
-  virtual void update(const UISpace &space, const float dt) override;
+  virtual void update(ResourceContext &resourceCtx, const UISpace &space,
+                      const float dt) override;
 
   bool clicked() const { return clicked_; }
   bool pressed() const { return styleParams_.pressed; }

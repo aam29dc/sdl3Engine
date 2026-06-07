@@ -1,4 +1,5 @@
 #include "ui/elements/button.hpp"
+#include "core/context/resource.hpp"
 #include "core/input.hpp"
 #include "ui/elements/container.hpp"
 #include "ui/elements/element.hpp"
@@ -27,9 +28,10 @@ void UIButton::handleEvents(const Input &input, UIEventSink &sink) {
   }
 }
 
-void UIButton::update(const UISpace &space, const float dt) {
+void UIButton::update(ResourceContext &resourceCtx, const UISpace &space,
+                      const float dt) {
   if (clicked_) {
     clicked_ = false;
   }
-  UIElement::update(space, dt);
+  UIElement::update(resourceCtx, space, dt);
 }

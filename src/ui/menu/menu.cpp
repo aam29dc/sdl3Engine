@@ -1,4 +1,5 @@
 #include "ui/menu/menu.hpp"
+#include "core/context/resource.hpp"
 
 std::string menuIDtoString(const MenuID id) {
   switch (id) {
@@ -29,8 +30,9 @@ void Menu::handleEvents(const Input &input, UIEventSink &sink) {
   return root_.handleEvents(input, sink);
 }
 
-void Menu::update(const UISpace &space, const float dt) {
-  root_.update(space, dt);
+void Menu::update(ResourceContext &resourceCtx, const UISpace &space,
+                  const float dt) {
+  root_.update(resourceCtx, space, dt);
 }
 
 void Menu::render(const RenderContext &ctx) const { root_.render(ctx); }

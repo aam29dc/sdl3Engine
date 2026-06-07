@@ -26,15 +26,17 @@ UISolidStyle::UISolidStyle(const SDL_Color &fill, const SDL_Color &outline) {
 
 void UISolidStyle::render(const SDL_FRect &rect, const UIStyleParams &params,
                           const RenderContext &renderCtx) const {
+
+  const SDL_Color *fill = &fill_;
+
   if (params.pressed) {
-    renderCtx.renderer.setDrawColor(pressed_);
+    fill = &pressed_;
   } else if (params.hovered) {
-    renderCtx.renderer.setDrawColor(hover_);
+    fill = &hover_;
   } else if (params.focused) {
-    renderCtx.renderer.setDrawColor(focused_);
-  } else {
-    renderCtx.renderer.setDrawColor(fill_);
+    fill = &focused_;
   }
+  renderCtx.renderer.setDrawColor(*fill);
   renderCtx.renderer.drawFillRect(rect);
 
   renderCtx.renderer.setDrawColor(outline_);

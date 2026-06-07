@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 
+#include "core/context/resource.hpp"
 #include "ui/menu/id.hpp"
 
 class Menu;
@@ -34,7 +35,8 @@ public:
   void pop();
 
   void handleEvents(const Input &, UIEventSink &);
-  void update(const UISpace &space, const HUDData &, float dt);
+  void update(ResourceContext &resourceCtx, const UISpace &space,
+              const HUDData &, float dt);
   void render(const RenderContext &) const;
 
 private:

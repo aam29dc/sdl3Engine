@@ -1,5 +1,6 @@
 #include "ui/ui.hpp"
 #include "core/context/render.hpp"
+#include "core/context/resource.hpp"
 #include "ui/menu/mainMenu.hpp"
 #include "ui/menu/playMenu.hpp"
 #include <algorithm>
@@ -55,10 +56,11 @@ void UI::handleEvents(const Input &input, UIEventSink &sink) {
   }
 }
 
-void UI::update(const UISpace &space, const HUDData &hud, const float dt) {
+void UI::update(ResourceContext &resourcCtx, const UISpace &space,
+                const HUDData &hud, const float dt) {
   // update playMenu first
   if (std::find(stack_.begin(), stack_.end(), MenuID::Play) != stack_.end()) {
-    playMenu_->update(space, dt);
+    playMenu_->update(resourcCtx, space, dt);
     playMenu_->setHUDData(hud);
   }
 
@@ -67,7 +69,7 @@ void UI::update(const UISpace &space, const HUDData &hud, const float dt) {
   default:
     break;
   case MenuID::Main:
-    mainMenu_->update(space, dt);
+    mainMenu_->update(resourcCtx, space, dt);
     break;
   case MenuID::Play:
     // always update PlayMenu, above, thus do nothing here

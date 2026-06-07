@@ -1,5 +1,4 @@
 #include "managers/font.hpp"
-#include "core/renderer.hpp"
 #include <SDL3_ttf/SDL_ttf.h>
 #include <iostream>
 
@@ -35,7 +34,7 @@ FontManager::~FontManager() {
   }
 }
 
-SDL_Texture *FontManager::getText(Renderer *renderer, const std::string &text,
+SDL_Surface *FontManager::getText(const std::string &text,
                                   const SDL_Color &color, const FontSize size,
                                   const float wrapWidth) const {
   if (text.empty()) {
@@ -72,15 +71,5 @@ SDL_Texture *FontManager::getText(Renderer *renderer, const std::string &text,
     return nullptr;
   }
 
-  SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer->get(), surface);
-
-  SDL_DestroySurface(surface);
-
-  if (!texture) {
-    std::cout << "SDL_CreateTextureFromSurface failed: " << SDL_GetError()
-              << "\n";
-    return nullptr;
-  }
-
-  return texture;
+  return surface;
 }

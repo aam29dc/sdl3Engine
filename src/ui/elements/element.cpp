@@ -1,5 +1,6 @@
 #include "ui/elements/element.hpp"
 #include "core/context/render.hpp"
+#include "core/context/resource.hpp"
 #include "ui/content/content.hpp"
 #include "ui/layout.hpp"
 #include "ui/style/solid.hpp"
@@ -15,11 +16,15 @@ void UIElement::handleEvents(const Input &, UIEventSink &) {
     return;
 }
 
-void UIElement::update(const UISpace &space, const float) {
+void UIElement::update(ResourceContext &resourceCtx, const UISpace &space,
+                       const float dt) {
   if (!visible_)
     return;
   if (any(dirty_)) {
     resolvedRect_ = resolveRect(transform_, space);
+    for (auto &c : contents_) {
+      c->update(resourceCtx, dt);
+    }
   }
 }
 
@@ -41,6 +46,8 @@ void UIElement::markDirty(const Dirty d) {
     dirty_ |= d;
   }
 }
+
+bool UIElement::dirty() const { return dirty_ != Dirty::None; }
 
 void UIElement::style(std::unique_ptr<UIStyle> style) {
   if (style) {
