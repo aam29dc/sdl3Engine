@@ -4,7 +4,7 @@
 
 class UITexturedStyle : public UIStyle {
 private:
-  TextureHandle texture_;
+  TextureHandle handle_;
 
 public:
   explicit UITexturedStyle(TextureHandle texture);

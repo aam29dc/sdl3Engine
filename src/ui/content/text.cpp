@@ -13,6 +13,8 @@ UITextContent::UITextContent(UIElement *owner, const std::string &text,
     owner_->markDirty(Dirty::Layout);
 }
 
+// rect same size as style rect thus overwrites, we should decrease the size by
+// 2px on x and y, and recenter
 void UITextContent::render(const SDL_FRect &rect,
                            const RenderContext &renderCtx) const {
   if (!renderCtx.textures.valid(cached_))

@@ -6,6 +6,8 @@
 #include "ui/content/text.hpp"
 #include "ui/elements/button.hpp"
 #include "ui/elements/element.hpp"
+#include "ui/style/solid.hpp"
+#include "ui/style/textured.hpp"
 
 MainMenu::MainMenu(ResourceContext &resourceCtx)
     : Menu(resourceCtx, MenuID::Main) {
@@ -16,7 +18,8 @@ MainMenu::MainMenu(ResourceContext &resourceCtx)
   TextureHandle image = resourceCtx.textures.loadFromFile(
       resourceCtx.renderer, "assets/textures/image.png");
 
-  ele.addContent(std::make_unique<UIImageContent>(image));
+  ele.style(std::make_unique<UITexturedStyle>(image));
+  //  ele.addContent(std::make_unique<UIImageContent>(image));
   ele.addContent(std::make_unique<UITextContent>(&ele, "xdc"));
 
   root_.add(std::make_unique<UIButton>(
