@@ -14,11 +14,13 @@ include
 │   ├── engine.hpp
 │   ├── handles.hpp
 │   ├── input.hpp
+│   ├── inputrouter.hpp
 │   ├── renderer.hpp
 │   ├── time.hpp
 │   ├── types.hpp
 │   └── window.hpp
 ├── managers
+│   ├── binds.hpp
 │   ├── entity.hpp
 │   ├── font.hpp
 │   └── texture.hpp
@@ -63,11 +65,13 @@ src
 │   ├── console.cpp
 │   ├── engine.cpp
 │   ├── input.cpp
+│   ├── inputrouter.cpp
 │   ├── renderer.cpp
 │   ├── time.cpp
 │   └── window.cpp
 ├── main.cpp
 ├── managers
+│   ├── binds.cpp
 │   ├── entity.cpp
 │   ├── font.cpp
 │   └── texture.cpp
@@ -97,5 +101,5 @@ src
     │   └── textured.cpp
     └── ui.cpp
 
-23 directories, 74 files
+23 directories, 78 files
 ```
