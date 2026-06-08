@@ -2,7 +2,9 @@
 #include "core/console.hpp"
 #include "core/context/resource.hpp"
 #include "core/input.hpp"
+#include "core/inputrouter.hpp"
 #include "core/time.hpp"
+#include "managers/binds.hpp"
 #include "ui/eventsink.hpp"
 #include <memory>
 
@@ -25,7 +27,11 @@ private:
 
   std::unique_ptr<GameState> play_;
 
+  Binds binds_;
   Console console_;
+
+  std::unique_ptr<InputRouter> router_;
+
   UIEventSink sink_;
   Time time_;
   bool quit_ = false;

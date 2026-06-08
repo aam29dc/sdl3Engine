@@ -7,6 +7,7 @@
 class Input {
 public:
   enum class MouseButton : u8 { Middle = 0, Left = 1, Right = 2, Count = 3 };
+
   Input() = default;
   Input(const Input &) = delete;
   Input &operator=(const Input &) = delete;

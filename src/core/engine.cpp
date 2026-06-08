@@ -5,6 +5,7 @@
 #include "core/context/render.hpp"
 #include "core/context/resource.hpp"
 #include "core/context/update.hpp"
+#include "core/inputrouter.hpp"
 #include "core/renderer.hpp"
 #include "core/window.hpp"
 #include "managers/font.hpp"
@@ -83,6 +84,8 @@ bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
   console_.addCommand("exit", cmd_quit);
   console_.addCommand("timescale", cmd_timescale);
 
+  router_ = std::make_unique<InputRouter>(binds_, console_);
+
   //  play_ = std::make_unique<PlayState>();
   //  play_->onEnter(renderCtx);
 
@@ -112,6 +115,7 @@ void Engine::handleEvents(const SDL_Event &e) {
   input_.handleEvent(e);
   CommandContext cmdCtx = {*this};
   console_.handleEvents(cmdCtx, e, *window_);
+  router_->handle(cmdCtx, e);
 }
 
 void Engine::update(float dt) {
