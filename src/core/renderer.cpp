@@ -1,8 +1,6 @@
 #include "core/renderer.hpp"
 #include "core/window.hpp"
-// #include "managers/texture.hpp"
 #include <SDL3/SDL_log.h>
-#include <SDL3/SDL_render.h>
 
 Renderer::~Renderer() {
   if (renderer_) {
@@ -15,11 +13,12 @@ bool Renderer::init(Window *window) {
   if (!window) {
     return false;
   }
-  renderer_ = SDL_CreateRenderer(window->get(), "opengl");
+  renderer_ = SDL_CreateRenderer(window->get(), nullptr);
   if (!renderer_) {
     SDL_Log("SDL_CreateRenderer failed: %s", SDL_GetError());
     return false;
   }
+  SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
   return true;
 }
 
@@ -41,4 +40,5 @@ void Renderer::draw(SDL_Texture *texture, const SDL_FRect *src,
                     const SDL_FRect *dst) const {
   SDL_RenderTexture(renderer_, texture, src, dst);
 }
+
 SDL_Renderer *Renderer::get() { return renderer_; }

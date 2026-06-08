@@ -1,13 +1,20 @@
 #include "core/input.hpp"
+#include "core/types.hpp"
 #include <cstring>
 
 void Input::beginFrame() {
-  std::memcpy(prevKeys_.data(), keys_.data(), SDL_SCANCODE_COUNT);
+  SDL_PumpEvents();
 
-  const bool *state = SDL_GetKeyboardState(nullptr);
-  std::memcpy(keys_.data(), state, SDL_SCANCODE_COUNT);
+  prevKeys_ = keys_;
 
-  std::memcpy(prevMouse_.data(), mouse_.data(), mouse_.size());
+  int numKeys = 0;
+  const bool *state = SDL_GetKeyboardState(&numKeys);
+
+  for (int i = 0; i < numKeys && i < SDL_SCANCODE_COUNT; i++) {
+    keys_[i] = state[i];
+  }
+
+  prevMouse_ = mouse_;
 }
 
 void Input::handleEvent(const SDL_Event &e) {
@@ -29,6 +36,24 @@ void Input::handleEvent(const SDL_Event &e) {
   default:
     break;
   }
+}
+
+SDL_Scancode Input::getFirstKeyDown() const {
+  for (int i = 0; i < SDL_SCANCODE_COUNT; ++i) {
+    if (keys_[i]) {
+      return static_cast<SDL_Scancode>(i);
+    }
+  }
+  return SDL_SCANCODE_UNKNOWN;
+}
+
+SDL_Scancode Input::getFirstKeyReleased() const {
+  for (int i = 0; i < SDL_SCANCODE_COUNT; ++i) {
+    if (prevKeys_[i] && !keys_[i]) {
+      return static_cast<SDL_Scancode>(i);
+    }
+  }
+  return SDL_SCANCODE_UNKNOWN;
 }
 
 bool Input::isKeyDown(SDL_Scancode key) const { return keys_[key]; }

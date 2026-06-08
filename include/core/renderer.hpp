@@ -1,8 +1,8 @@
 #pragma once
-// #include "core/handles.hpp"
 #include <SDL3/SDL_render.h>
+
 class Window;
-// class TextureManager;
+
 class Renderer {
 private:
   SDL_Renderer *renderer_ = nullptr;

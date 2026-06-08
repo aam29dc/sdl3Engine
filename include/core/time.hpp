@@ -19,6 +19,6 @@ public:
   float dt() const { return dt_; }
   float elapsed() const { return elapsed_; }
 
-  void setTimescale(float timescale) { timescale_ = timescale; }
+  void timescale(float timescale) { timescale_ = timescale; }
   float timescale() const { return timescale_; }
 };

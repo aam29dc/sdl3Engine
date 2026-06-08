@@ -73,3 +73,23 @@ SDL_Surface *FontManager::getText(const std::string &text,
 
   return surface;
 }
+
+int FontManager::getLineHeight(FontSize size) const {
+  TTF_Font *font = nullptr;
+
+  switch (size) {
+  case FontSize::Small:
+    font = fonts_[0];
+    break;
+  case FontSize::Medium:
+    font = fonts_[1];
+    break;
+  case FontSize::Large:
+    font = fonts_[2];
+    break;
+  default:
+    return 0;
+  }
+
+  return TTF_GetFontHeight(font);
+}

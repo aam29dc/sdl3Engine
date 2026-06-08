@@ -16,6 +16,9 @@ public:
   void beginFrame();
   void handleEvent(const SDL_Event &e);
 
+  SDL_Scancode getFirstKeyDown() const;
+  SDL_Scancode getFirstKeyReleased() const;
+
   bool isKeyDown(SDL_Scancode key) const;
   bool isKeyPressed(SDL_Scancode key) const;
   bool isKeyReleased(SDL_Scancode key) const;

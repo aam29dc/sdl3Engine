@@ -40,4 +40,6 @@ public:
                        const FontSize size, const float wrapWidth) const;
 
   TTF_Font *get(FontSize size) const;
+
+  int getLineHeight(FontSize size) const;
 };

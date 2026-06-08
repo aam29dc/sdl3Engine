@@ -1,5 +1,6 @@
 #include "core/engine.hpp"
 #include "core/commands.hpp"
+#include "core/context/command.hpp"
 #include "core/context/frame.hpp"
 #include "core/context/render.hpp"
 #include "core/context/resource.hpp"
@@ -19,6 +20,8 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <iostream>
 #include <memory>
+
+void Engine::quit() { quit_ = true; }
 
 bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
   if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -72,8 +75,13 @@ bool Engine::init(const i32 windowWidth, const i32 windowHeight) {
 
   ui_ = std::make_unique<UI>(resourceCtx);
 
+  CommandContext cmdCtx = {*this};
+  console_.init(cmdCtx);
   console_.addCommand("clear", cmd_clear);
   console_.addCommand("echo", cmd_echo);
+  console_.addCommand("quit", cmd_quit);
+  console_.addCommand("exit", cmd_quit);
+  console_.addCommand("timescale", cmd_timescale);
 
   //  play_ = std::make_unique<PlayState>();
   //  play_->onEnter(renderCtx);
@@ -86,12 +94,14 @@ void Engine::run() {
     SDL_Event e;
     time_.tick();
     input().beginFrame(); // calls getKeyBoardState
+
     while (SDL_PollEvent(&e)) {
       if (e.type == SDL_EVENT_QUIT || window().getQuit())
         quit_ = true;
 
       handleEvents(e);
     }
+
     update(time_.dt());
     render();
   }
@@ -100,6 +110,8 @@ void Engine::run() {
 void Engine::handleEvents(const SDL_Event &e) {
   window_->handleEvent(e);
   input_.handleEvent(e);
+  CommandContext cmdCtx = {*this};
+  console_.handleEvents(cmdCtx, e, *window_);
 }
 
 void Engine::update(float dt) {
@@ -167,6 +179,7 @@ void Engine::update(float dt) {
   ResourceContext resourceCtx = {*textures_, *fonts_, *renderer_};
 
   ui_->update(resourceCtx, space, hud, dt);
+  console_.update(resourceCtx, space, dt);
 }
 
 void Engine::render() const {
@@ -183,6 +196,7 @@ void Engine::render() const {
   if (play_)
     play_->render(renderCtx);
   ui_->render(renderCtx);
+  console_.render(renderCtx);
 
   renderer_->present();
 }

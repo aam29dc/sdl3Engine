@@ -17,8 +17,8 @@ void Camera::setSize(const Float2 size) { size_ = size; }
 void Camera::setZoom(const float zoom) { zoom_ = zoom; }
 
 void Camera::follow(const SDL_FRect &rect) {
-  pos_ = {rect.x - size_.x / 2.0f + rect.w / 2.0f,
-          rect.y - size_.y / 2.0f + rect.h / 2.0f};
+  pos_ = {rect.x - size_.x * 0.5f + rect.w * 0.5f,
+          rect.y - size_.y * 0.5f + rect.h * 0.5f};
 }
 
 Float2 Camera::position() const { return pos_; }

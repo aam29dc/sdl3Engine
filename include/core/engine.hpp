@@ -51,6 +51,11 @@ public:
   Console &console() { return console_; }
   const Console &console() const { return console_; }
 
+  Time &time() { return time_; }
+  const Time &time() const { return time_; }
+
+  void quit();
+
   Engine(const Engine &) = delete;
   Engine &operator=(const Engine &) = delete;
   Engine(Engine &&) = delete;
