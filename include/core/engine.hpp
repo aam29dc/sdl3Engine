@@ -14,7 +14,9 @@ class TextureManager;
 class Renderer;
 class Window;
 class GameState;
+class PlayState;
 class InputBuffer;
+class UpdateContext;
 
 class Engine {
 private:
@@ -26,7 +28,7 @@ private:
   std::unique_ptr<TextureManager> textures_;
   std::unique_ptr<UI> ui_;
 
-  std::unique_ptr<GameState> play_;
+  std::unique_ptr<PlayState> play_;
 
   Binds binds_;
   Console console_;
@@ -37,6 +39,11 @@ private:
   UIEventSink sink_;
   Time time_;
   bool quit_ = false;
+
+  void processSink(UpdateContext &updateCtx);
+  void processBuffer(CommandContext &cmdCtx);
+  void registerCommands();
+  void registerActions();
 
 public:
   Engine();

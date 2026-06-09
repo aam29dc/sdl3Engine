@@ -29,3 +29,7 @@ HUDData PlayState::update(UpdateContext &, const float dt) {
 void PlayState::render(const RenderContext &renderCtx) const {
   renderSystem_.render(entities_, renderCtx, camera_);
 }
+
+ActionState &PlayState::actions() { return actions_; }
+
+const ActionState &PlayState::actions() const { return actions_; }

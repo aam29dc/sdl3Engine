@@ -16,6 +16,7 @@ include
 │   ├── types.hpp
 │   └── window.hpp
 ├── input
+│   ├── action_bind.hpp
 │   ├── binds.hpp
 │   ├── commands.hpp
 │   ├── console.hpp
@@ -27,10 +28,11 @@ include
 │   ├── renderable.hpp
 │   ├── rendersystem.hpp
 │   └── sprite.hpp
-├── resources
+├── resource
 │   ├── fontmanager.hpp
 │   └── texturemanager.hpp
-├── states
+├── state
+│   ├── actionState.hpp
 │   ├── gameState.hpp
 │   └── playState.hpp
 ├── ui
@@ -105,5 +107,5 @@ src
     ├── entity.cpp
     └── entitymanager.cpp
 
-25 directories, 80 files
+25 directories, 82 files
 ```

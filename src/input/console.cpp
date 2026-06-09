@@ -134,11 +134,18 @@ void Console::render(RenderContext &renderCtx) const {
   }
 }
 
-void Console::addCommand(std::string name, CommandFn fn) {
+void Console::addCommand(const std::string name, CommandFn fn) {
   if (commands_.find(name) == commands_.end())
     commands_[name] = fn;
   else
     print("addCommand error: " + name + " already exists.\n");
+}
+
+void Console::addAction(const std::string name, ActionFn fn) {
+  if (actions_.find(name) == actions_.end())
+    actions_[name] = fn;
+  else
+    print("addAction error: " + name + " already exists.\n");
 }
 
 void Console::print(const std::string &text) {

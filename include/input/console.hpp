@@ -18,7 +18,8 @@ class Console {
 public:
   using Args = std::vector<std::string>;
   using CommandFn = std::function<void(CommandContext &, const Args &)>;
-  // using CommandFn = void(*)(CommandContext&, const Args&);
+  using ActionFn = std::function<void(CommandContext &, const bool)>;
+
 private:
   struct HistoryLine {
     SDL_Texture *texture;
@@ -38,6 +39,7 @@ private:
   bool historyDirty_{false};
 
   std::unordered_map<std::string, CommandFn> commands_{};
+  std::unordered_map<std::string, ActionFn> actions_{};
 
   static Args tokenize(const std::string &line);
   bool open_ = false;
@@ -54,7 +56,8 @@ public:
   void render(RenderContext &renderCtx) const;
 
   void execute(CommandContext &cmdCtx, const std::string &line);
-  void addCommand(std::string name, CommandFn fn);
+  void addCommand(const std::string name, CommandFn fn);
+  void addAction(const std::string name, ActionFn fn);
   void print(const std::string &text);
   void clear();
 };

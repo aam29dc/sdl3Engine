@@ -1,6 +1,7 @@
 #pragma once
 #include "core/camera.hpp"
 #include "render/rendersystem.hpp"
+#include "state/actionState.hpp"
 #include "state/gameState.hpp"
 #include "ui/hud.hpp"
 #include "world/entitymanager.hpp"
@@ -9,8 +10,9 @@ class PlayState : public GameState {
 private:
   HUDData hud_{};
   Camera camera_{};
-  EntityManager entities_;
-  RenderSystem renderSystem_;
+  EntityManager entities_{};
+  RenderSystem renderSystem_{};
+  ActionState actions_{};
 
 public:
   PlayState();
@@ -22,4 +24,7 @@ public:
 
   void onEnter(UpdateContext &updateCtx) override;
   void onExit(UpdateContext &updateCtx) override;
+
+  ActionState &actions();
+  const ActionState &actions() const;
 };
