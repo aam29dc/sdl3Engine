@@ -1,5 +1,5 @@
 #pragma once
-#include "managers/font.hpp"
+#include "resource/fontmanager.hpp"
 #include <SDL3/SDL_events.h>
 #include <functional>
 #include <string>

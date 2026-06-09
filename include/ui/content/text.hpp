@@ -2,7 +2,7 @@
 #include "core/context/render.hpp"
 #include "core/context/resource.hpp"
 #include "core/handles.hpp"
-#include "managers/font.hpp"
+#include "resource/fontmanager.hpp"
 #include "ui/content/content.hpp"
 #include "ui/elements/element.hpp"
 #include <SDL3/SDL_render.h>

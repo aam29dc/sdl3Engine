@@ -1,4 +1,4 @@
-#include "core/inputbuffer.hpp"
+#include "input/inputbuffer.hpp"
 
 void InputBuffer::push(const std::string &cmd) { cmds_.push_back(cmd); }
 

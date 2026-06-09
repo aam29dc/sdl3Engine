@@ -1,12 +1,10 @@
 #include "ui/menu/mainMenu.hpp"
 #include "core/context/render.hpp"
 #include "core/context/resource.hpp"
-#include "managers/texture.hpp"
-#include "ui/content/image.hpp"
+#include "resource/texturemanager.hpp"
 #include "ui/content/text.hpp"
 #include "ui/elements/button.hpp"
 #include "ui/elements/element.hpp"
-#include "ui/style/solid.hpp"
 #include "ui/style/textured.hpp"
 
 MainMenu::MainMenu(ResourceContext &resourceCtx)

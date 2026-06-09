@@ -1,7 +1,7 @@
 #include "ui/content/image.hpp"
 #include "core/context/render.hpp"
 #include "core/renderer.hpp"
-#include "managers/texture.hpp"
+#include "resource/texturemanager.hpp"
 #include "ui/elements/element.hpp"
 
 UIImageContent::UIImageContent(TextureHandle handle) : handle_(handle) {}

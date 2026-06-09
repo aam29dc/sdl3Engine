@@ -1,6 +1,6 @@
 #pragma once
 #include "core/handles.hpp"
-#include "objects/entity.hpp"
+#include "world/entity.hpp"
 #include <memory>
 #include <vector>
 

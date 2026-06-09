@@ -2,8 +2,8 @@
 #include "core/context/render.hpp"
 #include "core/context/resource.hpp"
 #include "core/renderer.hpp"
-#include "managers/font.hpp"
-#include "managers/texture.hpp"
+#include "resource/fontmanager.hpp"
+#include "resource/texturemanager.hpp"
 
 UITextContent::UITextContent(UIElement *owner, const std::string &text,
                              const FontManager::FontSize size)

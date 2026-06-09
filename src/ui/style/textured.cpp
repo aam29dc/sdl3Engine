@@ -1,7 +1,7 @@
 #include "ui/style/textured.hpp"
 #include "core/context/render.hpp"
 #include "core/renderer.hpp"
-#include "managers/texture.hpp"
+#include "resource/texturemanager.hpp"
 
 UITexturedStyle::UITexturedStyle(TextureHandle handle) { handle_ = handle; }
 

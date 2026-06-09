@@ -1,6 +1,6 @@
 #pragma once
 #include "core/context/render.hpp"
-#include "managers/entity.hpp"
+#include "world/entitymanager.hpp"
 
 class RenderSystem {
 private:

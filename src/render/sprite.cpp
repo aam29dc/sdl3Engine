@@ -1,6 +1,6 @@
 #include "render/sprite.hpp"
 #include "core/renderer.hpp"
-#include "managers/texture.hpp"
+#include "resource/texturemanager.hpp"
 
 void Sprite::render(const RenderContext &renderCtx, const Float2 &pos,
                     const Float2 &size) const {

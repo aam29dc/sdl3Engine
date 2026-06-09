@@ -1,4 +1,4 @@
-#include "managers/texture.hpp"
+#include "resource/texturemanager.hpp"
 #include "core/handles.hpp"
 #include "core/renderer.hpp"
 #include <SDL3/SDL_render.h>

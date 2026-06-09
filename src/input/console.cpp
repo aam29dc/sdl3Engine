@@ -1,12 +1,12 @@
-#include "core/console.hpp"
+#include "input/console.hpp"
 #include "core/context/command.hpp"
 #include "core/context/render.hpp"
 #include "core/context/resource.hpp"
 #include "core/engine.hpp"
 #include "core/renderer.hpp"
 #include "core/window.hpp"
-#include "managers/font.hpp"
-#include "managers/texture.hpp"
+#include "resource/fontmanager.hpp"
+#include "resource/texturemanager.hpp"
 #include "ui/layout.hpp"
 #include <SDL3/SDL_keyboard.h>
 #include <SDL3/SDL_render.h>

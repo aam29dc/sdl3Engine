@@ -1,9 +1,9 @@
 #pragma once
 #include "core/camera.hpp"
-#include "managers/entity.hpp"
-#include "render/system.hpp"
-#include "states/gameState.hpp"
+#include "render/rendersystem.hpp"
+#include "state/gameState.hpp"
 #include "ui/hud.hpp"
+#include "world/entitymanager.hpp"
 
 class PlayState : public GameState {
 private:

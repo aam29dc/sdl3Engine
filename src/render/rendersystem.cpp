@@ -1,6 +1,6 @@
-#include "render/system.hpp"
-#include "managers/entity.hpp"
-#include "objects/entity.hpp"
+#include "render/rendersystem.hpp"
+#include "world/entity.hpp"
+#include "world/entitymanager.hpp"
 #include <memory>
 
 void RenderSystem::render(const EntityManager &entities,

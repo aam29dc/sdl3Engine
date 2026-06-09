@@ -1,4 +1,4 @@
-#include "core/input.hpp"
+#include "input/input.hpp"
 #include "core/types.hpp"
 #include <cstring>
 

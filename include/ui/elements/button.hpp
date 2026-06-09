@@ -1,6 +1,6 @@
 #pragma once
 #include "core/context/resource.hpp"
-#include "core/input.hpp"
+#include "input/input.hpp"
 #include "ui/elements/element.hpp"
 #include "ui/eventsink.hpp"
 

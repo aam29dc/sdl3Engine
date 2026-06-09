@@ -1,4 +1,4 @@
-#include "objects/entity.hpp"
+#include "world/entity.hpp"
 #include "render/renderable.hpp"
 #include <memory>
 

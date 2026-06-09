@@ -1,6 +1,6 @@
 #pragma once
-#include "core/console.hpp"
 #include "core/context/command.hpp"
+#include "input/console.hpp"
 
 void cmd_clear(CommandContext &cmdCtx, const Console::Args &);
 

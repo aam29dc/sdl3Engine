@@ -1,6 +1,6 @@
 #include "ui/elements/button.hpp"
 #include "core/context/resource.hpp"
-#include "core/input.hpp"
+#include "input/input.hpp"
 #include "ui/elements/container.hpp"
 #include "ui/elements/element.hpp"
 #include "ui/layout.hpp"

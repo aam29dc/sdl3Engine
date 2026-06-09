@@ -1,10 +1,10 @@
 #pragma once
-#include "core/console.hpp"
 #include "core/context/resource.hpp"
-#include "core/input.hpp"
-#include "core/inputrouter.hpp"
 #include "core/time.hpp"
-#include "managers/binds.hpp"
+#include "input/binds.hpp"
+#include "input/console.hpp"
+#include "input/input.hpp"
+#include "input/inputrouter.hpp"
 #include "ui/eventsink.hpp"
 #include <memory>
 

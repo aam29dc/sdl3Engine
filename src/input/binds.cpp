@@ -1,4 +1,4 @@
-#include "managers/binds.hpp"
+#include "input/binds.hpp"
 
 void Binds::bind(const SDL_Scancode key, const std::string &down,
                  const std::string &up) {

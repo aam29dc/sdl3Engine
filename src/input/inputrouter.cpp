@@ -1,6 +1,6 @@
-#include "core/inputrouter.hpp"
-#include "core/inputbuffer.hpp"
-#include "managers/binds.hpp"
+#include "input/inputrouter.hpp"
+#include "input/binds.hpp"
+#include "input/inputbuffer.hpp"
 
 InputRouter::InputRouter(Binds &binds, InputBuffer &buffer)
     : binds_(binds), buffer_(buffer) {}
