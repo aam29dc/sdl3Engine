@@ -13,6 +13,7 @@ include
 │   │   └── world.hpp
 │   ├── engine.hpp
 │   ├── handles.hpp
+│   ├── inputbuffer.hpp
 │   ├── input.hpp
 │   ├── inputrouter.hpp
 │   ├── renderer.hpp
@@ -64,6 +65,7 @@ src
 │   ├── commands.cpp
 │   ├── console.cpp
 │   ├── engine.cpp
+│   ├── inputbuffer.cpp
 │   ├── input.cpp
 │   ├── inputrouter.cpp
 │   ├── renderer.cpp
@@ -101,5 +103,5 @@ src
     │   └── textured.cpp
     └── ui.cpp
 
-23 directories, 78 files
+23 directories, 80 files
 ```

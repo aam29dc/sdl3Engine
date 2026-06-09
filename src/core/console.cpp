@@ -12,7 +12,6 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <core/context/command.hpp>
-#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -139,7 +138,7 @@ void Console::addCommand(std::string name, CommandFn fn) {
   if (commands_.find(name) == commands_.end())
     commands_[name] = fn;
   else
-    std::cout << "addCommand error: " << name << " already exists.\n";
+    print("addCommand error: " + name + " already exists.\n");
 }
 
 void Console::print(const std::string &text) {

@@ -1,13 +1,13 @@
 #pragma once
-#include "core/context/command.hpp"
 #include <SDL3/SDL_events.h>
 struct Binds;
 struct Console;
+class InputBuffer;
 
 class InputRouter {
 private:
   Binds &binds_;
-  Console &console_;
+  InputBuffer &buffer_;
 
 public:
   InputRouter(const InputRouter &) = delete;
@@ -15,6 +15,6 @@ public:
   InputRouter(InputRouter &&) = delete;
   InputRouter &operator=(InputRouter &&) = delete;
 
-  InputRouter(Binds &binds, Console &console);
-  void handle(CommandContext &cmdCtx, const SDL_Event &e);
+  InputRouter(Binds &binds, InputBuffer &buffer);
+  void handle(const SDL_Event &e);
 };

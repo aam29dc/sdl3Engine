@@ -14,6 +14,7 @@ class TextureManager;
 class Renderer;
 class Window;
 class GameState;
+class InputBuffer;
 
 class Engine {
 private:
@@ -30,6 +31,7 @@ private:
   Binds binds_;
   Console console_;
 
+  std::unique_ptr<InputBuffer> buffer_;
   std::unique_ptr<InputRouter> router_;
 
   UIEventSink sink_;

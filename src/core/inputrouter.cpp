@@ -1,12 +1,11 @@
 #include "core/inputrouter.hpp"
-#include "core/console.hpp"
-#include "core/context/command.hpp"
+#include "core/inputbuffer.hpp"
 #include "managers/binds.hpp"
 
-InputRouter::InputRouter(Binds &binds, Console &console)
-    : binds_(binds), console_(console) {}
+InputRouter::InputRouter(Binds &binds, InputBuffer &buffer)
+    : binds_(binds), buffer_(buffer) {}
 
-void InputRouter::handle(CommandContext &cmdCtx, const SDL_Event &e) {
+void InputRouter::handle(const SDL_Event &e) {
   switch (e.type) {
   default:
     break;
@@ -23,7 +22,7 @@ void InputRouter::handle(CommandContext &cmdCtx, const SDL_Event &e) {
     if (!cmd)
       return;
 
-    console_.execute(cmdCtx, *cmd);
+    buffer_.push(*cmd);
     break;
   }
   }
