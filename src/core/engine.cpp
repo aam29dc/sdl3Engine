@@ -155,7 +155,8 @@ void Engine::update(float dt) {
   if (play_)
     play_->handleEvents(frameCtx);
 
-  UpdateContext updateCtx = {*renderer_, *textures_, *fonts_};
+  ResourceContext resourceCtx = {*textures_, *fonts_, *renderer_};
+  UpdateContext updateCtx = {resourceCtx};
   processSink(updateCtx);
 
   CommandContext cmdCtx = {*this};
@@ -164,8 +165,6 @@ void Engine::update(float dt) {
   HUDData hud{};
   if (play_)
     hud = play_->update(updateCtx, dt);
-
-  ResourceContext resourceCtx = {*textures_, *fonts_, *renderer_};
 
   ui_->update(resourceCtx, space, hud, dt);
   console_.update(resourceCtx, space, dt);
@@ -240,7 +239,8 @@ Engine::Engine() = default;
 
 Engine::~Engine() {
   if (play_) {
-    UpdateContext updateCtx = {*renderer_, *textures_, *fonts_};
+    ResourceContext resourceCtx = {*textures_, *fonts_, *renderer_};
+    UpdateContext updateCtx = {resourceCtx};
     play_->onExit(updateCtx);
     play_.reset();
   }

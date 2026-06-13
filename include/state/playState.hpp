@@ -4,13 +4,13 @@
 #include "state/actionState.hpp"
 #include "state/gameState.hpp"
 #include "ui/hud.hpp"
-#include "world/entitymanager.hpp"
+#include "world/world.hpp"
 
 class PlayState : public GameState {
 private:
   HUDData hud_{};
   Camera camera_{};
-  EntityManager entities_{};
+  World world_{};
   RenderSystem renderSystem_{};
   ActionState actions_{};
 
