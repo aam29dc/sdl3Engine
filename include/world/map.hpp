@@ -1,4 +1,5 @@
 #pragma once
+#include "world/mapobject.hpp"
 #include "world/tilelayer.hpp"
 #include "world/tileset.hpp"
 
@@ -11,4 +12,5 @@ struct Map { // array of tilesets, and layers
 
   std::vector<TileSet> tileSets;
   std::vector<TileLayer> layers;
+  std::vector<ObjectLayer> objectLayers;
 };

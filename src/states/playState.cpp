@@ -2,10 +2,8 @@
 #include "core/context/frame.hpp"
 #include "core/context/update.hpp"
 #include "io/tiledloader.hpp"
-#include "render/rect.hpp"
 #include "ui/hud.hpp"
 #include <iostream>
-#include <memory>
 
 PlayState::PlayState() {}
 PlayState::~PlayState() {}
